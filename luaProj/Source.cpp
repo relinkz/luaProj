@@ -1,13 +1,15 @@
 #include "SFML\Graphics.hpp"
 #include "lua.hpp"
 
+sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+sf::CircleShape shape(100.f);
+
+void renderBox(float x, float y);
 int main()
 {
 	lua_State *L = luaL_newstate();
 
 
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 
 	while (window.isOpen())
@@ -20,9 +22,14 @@ int main()
 		}
 
 		window.clear();
-		window.draw(shape);
+		renderBox(0,0);
 		window.display();
 	}
 
 	return 0;
+}
+void renderBox(float x, float y)
+{
+	window.draw(shape);
+
 }
