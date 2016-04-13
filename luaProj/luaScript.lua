@@ -1,16 +1,29 @@
-local seb = Entity.New(0, 0, 0.2, 0.2)
-local axel = Entity.New(15,15, 0.1, 0.1)
-local engi = Engine
+Player = Entity.New(0, 0, 0.05, 0.05)
+Enemies = {Entity.New(0, 0, 0.01, 0.0), Entity.New(0, 50, 0.01, 0.0)}
+engi = Engine
+
+function render()
+	engi.windowClear()
+	engi.renderPlayer(Player)
+	
+	for y=1, #Enemies
+	do
+		engi.renderEnemy(Enemies[y])
+	end
+
+	engi.windowDisplay()
+end
 
 while(true)
 do
-	engi.windowClear()
+	Player:Update()
+	
+	table.insert(Enemies ,Entity.New(0, 70, 0.01, 0.0))
 
-	seb:Update()
-	axel:Update()
+	for y=1, #Enemies
+	do
+		Enemies[y]:Update()
+	end
 
-	engi.renderPlayer(seb)
-	engi.renderEnemy(axel)
-
-	engi.windowDisplay()
+	render()
 end

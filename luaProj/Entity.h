@@ -3,7 +3,7 @@
 #include "lua.hpp"
 #include <iostream>
 
-void initializeEntityMetadata(lua_State * L);
+void registerEntityFunctions(lua_State * L);
 
 class Entity
 {

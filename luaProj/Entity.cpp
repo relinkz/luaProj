@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-void initializeEntityMetadata(lua_State * L)
+void registerEntityFunctions(lua_State * L)
 {
 	//här inititierar metedata, such meta such wow
 	luaL_newmetatable(L, "MetaEntity");

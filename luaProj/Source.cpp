@@ -22,29 +22,15 @@ static int renderEnemy(lua_State *L);
 static int windowDisplay(lua_State *L);
 static int windowClear(lua_State *L);
 
+void playGame();
+
 int main()
 {	
 	initializeLua();
-
-	initializeEntityMetadata(L);
+	registerEntityFunctions(L);
 	registerEngineFunctions(L);
-	
-	luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
 
-	while (window.isOpen())
-	{
-		
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			//anropa lua update();
-
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-		//window.clear();
-		//windowDisplay();
-	}
+	playGame();
 
 	return 0;
 }
@@ -145,4 +131,14 @@ void registerEngineFunctions(lua_State * L)
 	lua_setfield(L, -1, "__index");
 
 	lua_setglobal(L, "Engine");
+}
+
+void playGame()
+{
+	int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
+
+	if (error)
+	{
+		cerr << lua_tostring(L,-1) << endl;
+	}
 }
