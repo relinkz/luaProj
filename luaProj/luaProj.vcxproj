@@ -152,14 +152,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="lauxlib.h" />
     <ClInclude Include="lua.h" />
     <ClInclude Include="lua.hpp" />
     <ClInclude Include="luaconf.h" />
     <ClInclude Include="lualib.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="luaScript.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
