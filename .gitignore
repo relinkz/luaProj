@@ -10,12 +10,14 @@
 *.userosscache
 *.sln.docstates
 *.tlog
+luaProj/Debug/vc140.pdb
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
 # Build results
 [Dd]ebug/
+luaProj/[Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
