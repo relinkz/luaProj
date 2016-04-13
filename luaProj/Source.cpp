@@ -6,7 +6,7 @@ using namespace std;
 
 //lua funktion som skapar spelare
 
-sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!");
 lua_State *L;
 
 
@@ -25,7 +25,10 @@ static int windowClear(lua_State *L);
 int main()
 {	
 	initializeLua();
+
+	initializeEntityMetadata(L);
 	registerEngineFunctions(L);
+	
 	luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
 
 	while (window.isOpen())
@@ -48,40 +51,48 @@ int main()
 
 static int renderPlayer(lua_State *L)
 {
-	float x = lua_tonumber(L, 1);
-	float y = lua_tonumber(L, 2);
+	Entity* aPtr = Entity::CheckEntity(L, 1);
 
-	sf::RectangleShape shape(sf::Vector2f(10, 10));
-	shape.setFillColor(sf::Color::Green);
-	shape.setPosition(x, y);
-	window.draw(shape);
+	if (aPtr != nullptr)
+	{
+		float x = aPtr->getXPos();
+		float y = aPtr->getYPos();
 
-	return 1; // because fack you, thats why!
+		sf::RectangleShape shape(sf::Vector2f(10, 10));
+		shape.setFillColor(sf::Color::Green);
+		shape.setPosition(x, y);
+		window.draw(shape);
+	}
+	return 0; // because fack you, thats why!
 }
 
 static int renderEnemy(lua_State *L)
 {
-	float x = lua_tonumber(L, 1);
-	float y = lua_tonumber(L, 2);
+	Entity* aPtr = Entity::CheckEntity(L, 1);
 
-	sf::RectangleShape shape(sf::Vector2f(10, 10));
-	shape.setFillColor(sf::Color::Red);
-	shape.setPosition(x, y);
-	window.draw(shape);
+	if (aPtr != nullptr)
+	{
+		float x = aPtr->getXPos();
+		float y = aPtr->getYPos();
 
-	return 1; // because fack you, thats why!
+		sf::RectangleShape shape(sf::Vector2f(10, 10));
+		shape.setFillColor(sf::Color::Red);
+		shape.setPosition(x, y);
+		window.draw(shape);
+	}
+	return 0; // because fack you, thats why!
 }
 
 static int windowClear(lua_State *L)
 {
 	window.clear();
-	return 1;
+	return 0;
 }
 
 static int windowDisplay(lua_State *L)
 {
 	window.display();
-	return 1;
+	return 0;
 }
 
 void printLuaVar(const string &variable, lua_State *L)
@@ -108,8 +119,6 @@ void initializeLua()
 	int error = luaL_loadstring(L,
 		"print('welcome commander, Loading the scriptfile now:')"
 		) || lua_pcall(L, 0, 0, 0);
-
-	initializeEntityMetadata(L);
 }
 
 void registerEngineFunctions(lua_State * L)
