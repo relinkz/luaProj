@@ -1,7 +1,11 @@
 #include "SFML\Graphics.hpp"
+#include "lua.hpp"
 
 int main()
 {
+	lua_State *L = luaL_newstate();
+
+
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
