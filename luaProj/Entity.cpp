@@ -9,6 +9,7 @@ void registerEntityFunctions(lua_State * L)
 	{
 		{"New",   Entity::New },
 		{"Update",  Entity::Update},
+		{"UpdatePlayer",  Entity::UpdatePlayer },
 		{ NULL, NULL}
 	};
 
@@ -68,6 +69,11 @@ void Entity::move()
 	this->xPos += this->xDir;
 	this->yPos += this->yDir;
 }
+void Entity::move(float xDir,float  yDir)
+{
+	this->xPos += xDir;
+	this->yPos += yDir;
+}
 
 Entity* Entity::CheckEntity(lua_State * L, int i)
 {
@@ -115,4 +121,35 @@ int Entity::New(lua_State * L)
 	lua_setmetatable(L, -2);
 
 	return 1;
+}
+
+int Entity::UpdatePlayer(lua_State *L)
+{
+	Entity* aPtr = nullptr;
+	aPtr = CheckEntity(L, 1);
+
+	if (aPtr != nullptr)
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			aPtr->move(-1.0f, 0.0f);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+			aPtr->move(0.0f, -1.0f);
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			aPtr->move(1.0f, 0.0f);
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+			aPtr->move(0.0f, 1.0f);
+		}
+
+	}
+
+	return 0;
 }

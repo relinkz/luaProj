@@ -1,4 +1,3 @@
-#include "SFML\Graphics.hpp"
 #include <string>
 #include "Entity.h"
 
@@ -24,8 +23,6 @@ static int windowClear(lua_State *L);
 
 void playGame();
 
-sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-sf::CircleShape shape(100.f);
 
 void renderBox(float x, float y);
 int main()
@@ -47,10 +44,6 @@ static int renderPlayer(lua_State *L)
 	{
 		float x = aPtr->getXPos();
 		float y = aPtr->getYPos();
-
-<<<<<<< HEAD
-	shape.setFillColor(sf::Color::Green);
-=======
 		sf::RectangleShape shape(sf::Vector2f(10, 10));
 		shape.setFillColor(sf::Color::Green);
 		shape.setPosition(x, y);
@@ -58,7 +51,6 @@ static int renderPlayer(lua_State *L)
 	}
 	return 0; // because fack you, thats why!
 }
->>>>>>> 9d06a6a9805dd487742fcc8f7e8ac025cf9bb59f
 
 static int renderEnemy(lua_State *L)
 {
@@ -66,26 +58,13 @@ static int renderEnemy(lua_State *L)
 
 	if (aPtr != nullptr)
 	{
-<<<<<<< HEAD
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-
-		window.clear();
-		renderBox(0,0);
-		window.display();
-=======
 		float x = aPtr->getXPos();
 		float y = aPtr->getYPos();
-
 		sf::RectangleShape shape(sf::Vector2f(10, 10));
 		shape.setFillColor(sf::Color::Red);
 		shape.setPosition(x, y);
 		window.draw(shape);
->>>>>>> 9d06a6a9805dd487742fcc8f7e8ac025cf9bb59f
+
 	}
 	return 0; // because fack you, thats why!
 }
@@ -95,12 +74,6 @@ static int windowClear(lua_State *L)
 	window.clear();
 	return 0;
 }
-<<<<<<< HEAD
-void renderBox(float x, float y)
-{
-	window.draw(shape);
-
-=======
 
 static int windowDisplay(lua_State *L)
 {
@@ -168,5 +141,4 @@ void playGame()
 	{
 		cerr << lua_tostring(L,-1) << endl;
 	}
->>>>>>> 9d06a6a9805dd487742fcc8f7e8ac025cf9bb59f
 }

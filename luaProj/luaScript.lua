@@ -1,4 +1,4 @@
-Player = Entity.New(0, 0, 0.05, 0.05)
+Player = Entity.New(0, 0, 0.0, 0.0)
 Enemies = {Entity.New(0, 0, 0.01, 0.0), Entity.New(0, 50, 0.01, 0.0)}
 engi = Engine
 
@@ -17,7 +17,9 @@ end
 while(true)
 do
 	Player:Update()
-	
+
+	Player:UpdatePlayer()
+
 	table.insert(Enemies ,Entity.New(0, 70, 0.01, 0.0))
 
 	for y=1, #Enemies
