@@ -164,6 +164,7 @@
     <ClInclude Include="lualib.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="EnemySpawner.lua" />
     <None Include="luaScript.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

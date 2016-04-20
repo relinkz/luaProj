@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Scripts">
+      <UniqueIdentifier>{2c150583-b583-439c-bfa3-32c1e8821e55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -43,8 +46,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="EnemySpawner.lua">
+      <Filter>Source Files\Scripts</Filter>
+    </None>
     <None Include="luaScript.lua">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scripts</Filter>
     </None>
   </ItemGroup>
 </Project>
