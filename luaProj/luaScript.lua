@@ -1,11 +1,6 @@
 Player = Entity.New(200, 200, 0.0, 0.0)
 Enemies = {Entity.New(0, 0, 0.01, 0.0), Entity.New(0, 50, 0.01, 0.0)}
-<<<<<<< HEAD
 Walls = {}
-=======
-Enemy = Entity.New(15,0,0.01,0.0)
-
->>>>>>> 89f09814fa23e889c0dece955c498ea761b2a97b
 engi = Engine
 nrOfEnemies = 2
 
@@ -26,10 +21,9 @@ function render()
 	engi.windowDisplay()
 end
 
-<<<<<<< HEAD
-function spawnEnemy()
-	table.insert(Enemies ,Entity.New(0, 20, 0.02, 0.0))
-	--print("enemy created")
+function spawnEnemy(var1, var2)
+	table.insert(Enemies ,Entity.New(var1, var2, 0.02, 0.0))
+    --print("enemy created")
 end
 
 function readFile()
@@ -66,11 +60,6 @@ function readFile()
 	io.close(file)
 
 	--print("hello? again")
-=======
-function spawnEnemy(var1, var2)
-	table.insert(Enemies ,Entity.New(var1, var2, 0.02, 0.0))
-	print("enemy created")
->>>>>>> 89f09814fa23e889c0dece955c498ea761b2a97b
 end
 
 readFile()
