@@ -87,7 +87,6 @@ do
 		Enemies[y]:Update ()
 		engi.intersectionTest (Player, Enemies[y])
 		
-		Enemies[y]:Delete();
 		nrOfEnemies = nrOfEnemies - 1
 	end
 	

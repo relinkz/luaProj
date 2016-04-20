@@ -10,7 +10,6 @@ void registerEntityFunctions(lua_State * L)
 		{"New",   Entity::New },
 		{"Update",  Entity::Update},
 		{"UpdatePlayer",  Entity::UpdatePlayer },
-		{"Delete",  Entity::RemoveEntity},
 		{ NULL, NULL}
 	};
 
@@ -163,14 +162,3 @@ int Entity::UpdatePlayer(lua_State *L)
 
 	return 0;
 }
-
-int Entity::RemoveEntity(lua_State *L)
-{
-	Entity* aPtr = nullptr;
-	aPtr = CheckEntity(L, 1);
-
-	delete aPtr;
-
-	return -1;
-}
-
