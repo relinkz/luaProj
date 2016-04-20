@@ -14,6 +14,8 @@ private:
 
 	float xDir;
 	float yDir;
+
+	float sideLength;
 public:
 	Entity();
 	Entity(float x, float y, float xDir, float yDir);
@@ -27,11 +29,15 @@ public:
 
 	void move();
 	void move(float xDif,float yDir);
+
+	float getSideLength() const;
 	
 	static Entity* CheckEntity(lua_State * L, int i);
+
 	static int Update(lua_State * L);
 	static int New(lua_State *L);
 	static int UpdatePlayer(lua_State *L);
+
 };
 
 #endif
