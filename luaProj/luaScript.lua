@@ -1,4 +1,4 @@
-Player = Entity.New(0, 0, 0.05, 0.05)
+Player = Entity.New(0, 0, 0.0, 0.0)
 Enemies = {Entity.New(0, 0, 0.01, 0.0), Entity.New(0, 50, 0.01, 0.0)}
 engi = Engine
 nrOfEnemies = 2
@@ -24,6 +24,7 @@ while(true)
 do
 	Player:Update()
 	--spawnEnemy()
+	Player:UpdatePlayer()
 
 	if nrOfEnemies < 3 then
 		spawnEnemy()
