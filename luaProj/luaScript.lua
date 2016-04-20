@@ -5,7 +5,7 @@ Player = Entity.New(200, 200, 0.0, 0.0)
 Enemies = {Entity.New(0, 0, 0.01, 0.0), Entity.New(0, 50, 0.01, 0.0)}
 Walls = {}
 engi = Engine
-nrOfEnemies = 2
+nrOfEnemies = 3
 
 function render()
 	engi.windowClear()
@@ -24,8 +24,8 @@ function render()
 	engi.windowDisplay()
 end
 
-function spawnEnemy(var1, var2)
-	table.insert(Enemies ,Entity.New(var1, var2, 0.02, 0.0))
+function spawnEnemy(var1, var2, var3, var4)
+	table.insert(Enemies ,Entity.New(var1, var2, var3, var4))
     --print("enemy created")
 end
 
@@ -69,8 +69,15 @@ do
 	Player:Update()
 	Player:UpdatePlayer()
 
-	if nrOfEnemies < 3 then
-		spawnEnemy (20, 20)
+	if nrOfEnemies < 100 then
+		spawnX = spawnXPos()
+		spawnY = spawnYPos()
+
+		spawnSpeedX = speedx(spawnX)
+		spawnSpeedY = speedy(spawnY)
+
+		spawnEnemy (spawnX, spawnY, spawnSpeedX, spawnSpeedY)
+
 		nrOfEnemies = nrOfEnemies + 1
 	end
 	for y=1, #Enemies
