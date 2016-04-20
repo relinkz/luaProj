@@ -1,4 +1,4 @@
-Player = Entity.New(0, 0, 0.0, 0.0)
+Player = Entity.New(200, 200, 0.0, 0.0)
 Enemies = {Entity.New(0, 0, 0.01, 0.0), Entity.New(0, 50, 0.01, 0.0)}
 Enemy = Entity.New(15,0,0.01,0.0)
 
@@ -10,35 +10,34 @@ function render()
 	engi.renderPlayer(Player)
 	engi.renderEnemy(Enemy)
 	
-	--for y=1, #Enemies
-	--do
-	--	engi.renderEnemy(Enemies[y])
-	--end
+	for y=1, #Enemies
+	do
+		engi.renderEnemy(Enemies[y])
+	end
 
 	engi.windowDisplay()
 end
 
-function spawnEnemy()
-	table.insert(Enemies ,Entity.New(0, 20, 0.02, 0.0))
+function spawnEnemy(var1, var2)
+	table.insert(Enemies ,Entity.New(var1, var2, 0.02, 0.0))
 	print("enemy created")
 end
 
 while(true)
 do
 	Player:Update()
-	--spawnEnemy()
 	Player:UpdatePlayer()
 
 	if nrOfEnemies < 3 then
-		--spawnEnemy()
-		--nrOfEnemies = nrOfEnemies + 1
+		spawnEnemy (20, 20)
+		nrOfEnemies = nrOfEnemies + 1
 	end
 	for y=1, #Enemies
 	do
-		Enemies[y]:Update()
+		Enemies[y]:Update ()
+		engi.intersectionTest (Player, Enemies[y])
 	end
-	Enemy:Update()
-	engi.intersectionTest(Player, Enemy)
+	
 
 	render()
 end
