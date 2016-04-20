@@ -6,6 +6,8 @@ using namespace std;
 //lua funktion som skapar spelare
 
 sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!");
+sf::Event event;
+
 lua_State *L;
 
 
@@ -122,7 +124,14 @@ static int intersectionTest(lua_State *L)
 	Entity* Enemy = nullptr;
 	Enemy = Entity::CheckEntity(L, 2);
 	
-	if (intersectX(Player, Enemy) == true && intersectY(Player, Enemy))
+	sf::RectangleShape ap;
+	
+	sf::IntRect playerRect(Player->getXPos(), Player->getYPos(), 10, 10);
+	sf::IntRect enenmyRect(Enemy->getXPos(), Enemy->getYPos(), 10, 10);
+
+	bool result = playerRect.intersects(enenmyRect);
+
+	if (result)
 	{
 		cout << "You died" << endl;
 		system("pause");
@@ -131,35 +140,98 @@ static int intersectionTest(lua_State *L)
 	return 0;
 }
 
+static int wallIntersectionTest(lua_State *L)
+{
+	Entity* Player = nullptr;
+	Player = Entity::CheckEntity(L, 1);
+
+	Entity* Wall = nullptr;
+	Wall = Entity::CheckEntity(L, 2);
+
+	sf::RectangleShape ap;
+
+	sf::IntRect playerRect(Player->getXPos(), Player->getYPos(), 11, 11);
+	sf::IntRect wallRect(Wall->getXPos(), Wall->getYPos(), 11, 11);
+
+	bool result = playerRect.intersects(wallRect);
+
+	if (result)
+	{
+		lua_pushinteger(L, -1);
+		lua_setglobal(L, "intersectionTest");
+	}
+	else
+	{
+		lua_pushinteger(L, 1);
+		lua_setglobal(L, "intersectionTest");
+	}
+
+	return 1;
+}
+
+static int getInput(lua_State *L)
+{
+	window.pollEvent(event);
+	if(event.type == sf::Event::KeyPressed)
+	{
+		if (event.key.code == sf::Keyboard::A)
+		{
+			lua_pushinteger(L, 1);
+			lua_setglobal(L, "input");
+		}
+		else if (event.key.code == sf::Keyboard::S)
+		{
+			lua_pushinteger(L, 2);
+			lua_setglobal(L, "input");
+		}
+		else if (event.key.code == sf::Keyboard::R)
+		{
+			lua_pushinteger(L, 3);
+			lua_setglobal(L, "input");
+		}
+		else
+		{
+			lua_pushinteger(L, -1);
+			lua_setglobal(L, "input");
+		}
+	}
+
+	return 1;
+}
+
 bool intersectX(Entity* Player, Entity* Enemy)
 {
-	bool intersect = true;
-	if (Player->getXPos() > (Enemy->getXPos() + Enemy->getSideLength()))
+	bool intersect = false;
+	if (Player->getXPos() > Enemy->getXPos() && Player->getXPos() < Enemy->getXPos() + Enemy->getSideLength())
+	{
+		intersect = true;
+	}
+	/*if (Player->getXPos() + Player->getSideLength() < (Enemy->getXPos()))
 	{
 		//no intersect
 		intersect = false;
 	}
-	else if (Enemy->getXPos() > (Player->getXPos() + Player->getSideLength()))
+	else if (Enemy->getXPos() + Enemy->getSideLength() < (Player->getXPos()))
 	{
 		//no intersect
 		intersect = false;
-	}
+	}*/
 	return intersect;
 }
 
 bool intersectY(Entity* Player, Entity* Enemy)
 {
 	bool intersect = true;
-	if (Player->getYPos() > (Enemy->getYPos() + Enemy->getSideLength()))
+	/*if (Player->getYPos() + Player->getSideLength() < (Enemy->getYPos()))
 	{
 		//no intersect
 		intersect = false;
 	}
-	else if (Enemy->getYPos() > (Player->getYPos() + Player->getSideLength()))
+	else if (Enemy->getYPos() + Enemy->getSideLength() < (Player->getYPos()))
 	{
 		//no intersect
 		intersect = false;
-	}
+	}*/
 	return intersect;
 }
 
@@ -196,12 +268,14 @@ void registerEngineFunctions(lua_State * L)
 
 	luaL_Reg EngineTable[] =
 	{
-		{ "renderPlayer",		renderPlayer },
-		{ "renderEnemy",		renderEnemy},
-		{ "renderWall",			renderWall },
-		{ "windowClear",		windowClear },
-		{ "windowDisplay",		windowDisplay },
-		{ "intersectionTest",    intersectionTest},
+		{ "renderPlayer",			renderPlayer },
+		{ "renderEnemy",			renderEnemy},
+		{ "renderWall",				renderWall },
+		{ "windowClear",			windowClear },
+		{ "windowDisplay",			windowDisplay },
+		{ "intersectionTest",		intersectionTest},
+		{ "wallIntersectionTest",	wallIntersectionTest },
+		{ "getInput",				getInput },
 		{ NULL, NULL }
 	};
 
@@ -219,10 +293,16 @@ void registerEngineFunctions(lua_State * L)
 
 void playGame()
 {
-	int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
+	/*int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
 
 	if (error)
 	{
 		cerr << lua_tostring(L,-1) << endl;
+	}*/
+	int error = luaL_loadfile(L, "levelEditorScript.lua") || lua_pcall(L, 0, 1, 0);
+
+	if (error)
+	{
+		cerr << lua_tostring(L, -1) << endl;
 	}
 }

@@ -164,6 +164,7 @@
     <ClInclude Include="lualib.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="levelEditorScript.lua" />
     <None Include="luaScript.lua" />
   </ItemGroup>
   <ItemGroup>

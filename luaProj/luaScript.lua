@@ -30,6 +30,7 @@ function readFile()
 	--print("hello?")  
 
 	local file = io.open("filename.txt", "r")
+
 	local contentX = "-1"
 	local contenty = "-1"
 	local numberX = -1
@@ -40,14 +41,11 @@ function readFile()
 	contentX = io.read()
 	contentY = io.read()
 
-	while(contentX ~= "")
+	while(contentX ~= nil)
 	do
 
 		numberX = tonumber(contentX)
 		numberY = tonumber(contentY)
-
-		print(numberX)
-		print(numberY)
 
 		table.insert(Walls,Entity.New(numberX,numberY,0.0,0.0))
 
