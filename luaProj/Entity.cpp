@@ -10,6 +10,7 @@ void registerEntityFunctions(lua_State * L)
 		{"New",   Entity::New },
 		{"Update",  Entity::Update},
 		{"UpdatePlayer",  Entity::UpdatePlayer },
+		{"GetEntityData",},
 		{ NULL, NULL}
 	};
 
@@ -29,6 +30,8 @@ Entity::Entity()
 {
 	this->xPos = 0;
 	this->yPos = 0;
+
+	this->sideLength = 10;
 }
 
 Entity::Entity(float x, float y, float xDir, float yDir)
@@ -38,6 +41,8 @@ Entity::Entity(float x, float y, float xDir, float yDir)
 
 	this->xDir = xDir;
 	this->yDir = yDir;
+
+	this->sideLength = 10;
 }
 
 Entity::~Entity()
@@ -75,6 +80,11 @@ void Entity::move(float xDir,float  yDir)
 	this->yPos += yDir;
 }
 
+float Entity::getSideLength() const
+{
+	return this->sideLength;
+}
+
 Entity* Entity::CheckEntity(lua_State * L, int i)
 {
 	Entity* entityPtr = nullptr;
@@ -97,7 +107,6 @@ int Entity::Update(lua_State * L)
 	{
 		aPtr->move();
 	}
-
 	return 0;
 }
 
@@ -153,3 +162,4 @@ int Entity::UpdatePlayer(lua_State *L)
 
 	return 0;
 }
+

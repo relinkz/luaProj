@@ -15,6 +15,11 @@ void initializeLua();
 
 void registerEngineFunctions(lua_State * L);
 
+bool intersectX(Entity* Player, Entity* Enemy);
+bool intersectY(Entity* Player, Entity* Enemy);
+
+Entity* CheckEntity(lua_State *L, int i);
+
 static int renderPlayer(lua_State* L);
 static int renderEnemy(lua_State *L);
 
@@ -109,6 +114,55 @@ static int windowDisplay(lua_State *L)
 	return 0;
 }
 
+static int intersectionTest(lua_State *L)
+{	
+	Entity* Player = nullptr;
+	Player = Entity::CheckEntity(L, 1);
+	
+	Entity* Enemy = nullptr;
+	Enemy = Entity::CheckEntity(L, 2);
+	
+	if (intersectX(Player, Enemy) == true && intersectY(Player, Enemy))
+	{
+		cout << "You died" << endl;
+		system("pause");
+	}
+
+	return 0;
+}
+
+bool intersectX(Entity* Player, Entity* Enemy)
+{
+	bool intersect = true;
+	if (Player->getXPos() > (Enemy->getXPos() + Enemy->getSideLength()))
+	{
+		//no intersect
+		intersect = false;
+	}
+	else if (Enemy->getXPos() > (Player->getXPos() + Player->getSideLength()))
+	{
+		//no intersect
+		intersect = false;
+	}
+	return intersect;
+}
+
+bool intersectY(Entity* Player, Entity* Enemy)
+{
+	bool intersect = true;
+	if (Player->getYPos() > (Enemy->getYPos() + Enemy->getSideLength()))
+	{
+		//no intersect
+		intersect = false;
+	}
+	else if (Enemy->getYPos() > (Player->getYPos() + Player->getSideLength()))
+	{
+		//no intersect
+		intersect = false;
+	}
+	return intersect;
+}
+
 void printLuaVar(const string &variable, lua_State *L)
 {
 	int size = variable.length() + 1;
@@ -147,6 +201,7 @@ void registerEngineFunctions(lua_State * L)
 		{ "renderWall",			renderWall },
 		{ "windowClear",		windowClear },
 		{ "windowDisplay",		windowDisplay },
+		{ "intersectionTest",    intersectionTest},
 		{ NULL, NULL }
 	};
 
