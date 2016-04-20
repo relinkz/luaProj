@@ -112,9 +112,9 @@ int Entity::New(lua_State * L)
 	Entity** entity = reinterpret_cast<Entity**>(lua_newuserdata(L, sizeof(Entity*)));
 
 	*entity = new Entity(x, y, xDir, yDir);
-	std::cout
-		<< "xValue" << x << std::endl
-		<< "yValue" << y << std::endl;
+	//std::cout
+		//<< "xValue" << x << std::endl
+		//<< "yValue" << y << std::endl;
 
 
 	luaL_getmetatable(L, "MetaEntity");

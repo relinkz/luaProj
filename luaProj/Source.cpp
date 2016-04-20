@@ -25,6 +25,7 @@ void playGame();
 
 
 void renderBox(float x, float y);
+
 int main()
 {	
 	initializeLua();
@@ -32,6 +33,16 @@ int main()
 	registerEngineFunctions(L);
 
 	playGame();
+
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+	}
 
 	return 0;
 }
@@ -62,6 +73,23 @@ static int renderEnemy(lua_State *L)
 		float y = aPtr->getYPos();
 		sf::RectangleShape shape(sf::Vector2f(10, 10));
 		shape.setFillColor(sf::Color::Red);
+		shape.setPosition(x, y);
+		window.draw(shape);
+
+	}
+	return 0; // because fack you, thats why!
+}
+
+static int renderWall(lua_State *L)
+{
+	Entity* aPtr = Entity::CheckEntity(L, 1);
+
+	if (aPtr != nullptr)
+	{
+		float x = aPtr->getXPos();
+		float y = aPtr->getYPos();
+		sf::RectangleShape shape(sf::Vector2f(10, 10));
+		shape.setFillColor(sf::Color::White);
 		shape.setPosition(x, y);
 		window.draw(shape);
 
@@ -116,6 +144,7 @@ void registerEngineFunctions(lua_State * L)
 	{
 		{ "renderPlayer",		renderPlayer },
 		{ "renderEnemy",		renderEnemy},
+		{ "renderWall",			renderWall },
 		{ "windowClear",		windowClear },
 		{ "windowDisplay",		windowDisplay },
 		{ NULL, NULL }
