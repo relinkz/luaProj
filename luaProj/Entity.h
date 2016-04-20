@@ -37,8 +37,7 @@ public:
 	static int Update(lua_State * L);
 	static int New(lua_State *L);
 	static int UpdatePlayer(lua_State *L);
-	static int RemoveEntity(lua_State *L);
-
+	static int getPos(lua_State *L);
 };
 
 #endif

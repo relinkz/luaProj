@@ -52,5 +52,13 @@
     <None Include="luaScript.lua">
       <Filter>Source Files\Scripts</Filter>
     </None>
+    <None Include="levelEditorScript.lua">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="filename.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

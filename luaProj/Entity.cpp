@@ -7,9 +7,10 @@ void registerEntityFunctions(lua_State * L)
 
 	luaL_Reg EntityTable[] =
 	{
-		{"New",   Entity::New },
-		{"Update",  Entity::Update},
-		{"UpdatePlayer",  Entity::UpdatePlayer },
+		{"New",				Entity::New },
+		{"Update",			Entity::Update},
+		{"UpdatePlayer",	Entity::UpdatePlayer },
+		{"getPos",			Entity::getPos },
 		{ NULL, NULL}
 	};
 
@@ -136,29 +137,49 @@ int Entity::UpdatePlayer(lua_State *L)
 {
 	Entity* aPtr = nullptr;
 	aPtr = CheckEntity(L, 1);
-
+	float xSpeed = 0.5f;
+	float ySpeed = 0.5f;
 	if (aPtr != nullptr)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
-			aPtr->move(-1.0f, 0.0f);
+			aPtr->move(-xSpeed, 0.0f);
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			aPtr->move(0.0f, -1.0f);
+			aPtr->move(0.0f, -ySpeed);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			aPtr->move(1.0f, 0.0f);
+			aPtr->move(xSpeed, 0.0f);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			aPtr->move(0.0f, 1.0f);
+			aPtr->move(0.0f, ySpeed);
 		}
 
 	}
 
 	return 0;
+}
+
+int Entity::getPos(lua_State *L)
+{
+	Entity* aPtr = CheckEntity(L, 1);
+	if (aPtr != nullptr)
+	{
+		int xPos = aPtr->getXPos();
+		int yPos = aPtr->getYPos();
+
+		lua_pushinteger(L, xPos);
+		lua_setglobal(L, "xPos");
+
+		lua_pushinteger(L, yPos);
+		lua_setglobal(L, "yPos");
+	}
+
+
+	return 1;
 }

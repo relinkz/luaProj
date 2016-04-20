@@ -165,7 +165,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EnemySpawner.lua" />
+    <None Include="levelEditorScript.lua" />
     <None Include="luaScript.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="filename.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
