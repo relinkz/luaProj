@@ -1,3 +1,6 @@
+print(package.path)
+require("EnemySpawner")
+
 Player = Entity.New(200, 200, 0.0, 0.0)
 Enemies = {Entity.New(0, 0, 0.01, 0.0), Entity.New(0, 50, 0.01, 0.0)}
 Walls = {}
@@ -27,8 +30,6 @@ function spawnEnemy(var1, var2)
 end
 
 function readFile()
-	--print("hello?")  
-
 	local file = io.open("filename.txt", "r")
 	local contentX = "-1"
 	local contenty = "-1"
