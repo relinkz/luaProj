@@ -1,11 +1,13 @@
 print(package.path)
 require("EnemySpawner")
 
-Player = Entity.New(200, 200, 0.0, 0.0)
-Enemies = {Entity.New(0, 0, 0.01, 0.0), Entity.New(0, 50, 0.01, 0.0)}
+Player = Entity.New(0, 0, 0.0, 0.0)
+Enemies = {}
 Walls = {}
 engi = Engine
 nrOfEnemies = 3
+
+
 
 function render()
 	engi.windowClear()
@@ -24,7 +26,7 @@ function render()
 	engi.windowDisplay()
 end
 
-function spawnEnemy(var1, var2, var3, var4)
+function spawnBullet(var1, var2, var3, var4)
 	table.insert(Enemies ,Entity.New(var1, var2, var3, var4))
     --print("enemy created")
 end
@@ -47,8 +49,8 @@ function readFile()
 		numberX = tonumber(contentX)
 		numberY = tonumber(contentY)
 
-		print(numberX)
-		print(numberY)
+		--print(numberX)
+		--print(numberY)
 
 		table.insert(Walls,Entity.New(numberX,numberY,0.0,0.0))
 
@@ -76,7 +78,7 @@ do
 		spawnSpeedX = speedx(spawnX)
 		spawnSpeedY = speedy(spawnY)
 
-		spawnEnemy (spawnX, spawnY, spawnSpeedX, spawnSpeedY)
+		spawnBullet (spawnX, spawnY, spawnSpeedX, spawnSpeedY)
 
 		nrOfEnemies = nrOfEnemies + 1
 	end
@@ -84,6 +86,9 @@ do
 	do
 		Enemies[y]:Update ()
 		engi.intersectionTest (Player, Enemies[y])
+		
+		Enemies[y]:Delete();
+		nrOfEnemies = nrOfEnemies - 1
 	end
 	
 
