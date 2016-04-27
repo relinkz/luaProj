@@ -38,6 +38,7 @@ public:
 	void setYDir(const float &newYDir);
 
 	void move();
+	void move(const float &dt);
 	void move(float xDif,float yDir);
 
 	

@@ -14,6 +14,7 @@ xPos = 0
 yPos = 0
 counter = 0
 nrOfEnemies = 0
+gameTime = 0;
 
 table.insert(Enemies ,Entity.New(100, 100, 0.0, 0.0, 10, 10))
 
@@ -85,7 +86,6 @@ function destroyOutsideBullets()
 end
 
 function spawnEnemy()
-	print(nrOfEnemies)
 	if nrOfEnemies < 50 then
 		spawnX, spawnY, spawnSpeedX, spawnSpeedY = spawnPos();
 
@@ -95,7 +95,6 @@ function spawnEnemy()
 		spawnBullet (spawnX, spawnY, spawnSpeedX, spawnSpeedY, width, height)
 
 		nrOfEnemies = nrOfEnemies + 1
-		print("spawed an enemy")
 	end	
 end
 
@@ -137,17 +136,22 @@ do
 	end
 
 	--Player:Update()
-	Player:UpdatePlayer()
+	engi.getGameTime();
+	Player:UpdatePlayer(gameTime)
 
 	for y=1, #Particles
 	do
-		Particles[y]:Update()
+		--engi.getGameTime();
+		engi.getGameTime();
+		Particles[y]:Update(gameTime)
 	end
 
 	spawnEnemy()
 	for y=1, #Enemies
 	do
-		Enemies[y]:Update ()
+		--engi.getGameTime();
+		engi.getGameTime(gameTime);
+		Enemies[y]:Update (gameTime)
 		engi.intersectionTest (Player, Enemies[y], bonusScoreCounter, enemiesClose)
 
 	end
@@ -169,4 +173,5 @@ do
 	end
 
 	render()
+	engi.resetGameTime();
 end

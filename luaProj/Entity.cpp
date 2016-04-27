@@ -85,12 +85,18 @@ void Entity::move()
 	this->xPos += this->xDir;
 	this->yPos += this->yDir;
 }
+
+void Entity::move(const float & dt)
+{
+	this->xPos += this->xDir * dt;
+	this->yPos += this->yDir * dt;
+}
+
 void Entity::move(float xDir,float  yDir)
 {
 	this->xPos += xDir;
 	this->yPos += yDir;
 }
-
 
 float Entity::getXDir() const
 {
@@ -128,6 +134,11 @@ int Entity::Update(lua_State * L)
 {
 	Entity* aPtr = nullptr;
 	aPtr = CheckEntity(L, 1);
+
+	float dt = lua_tonumber(L, 2);
+
+	float xSpeed = dt *10000.0f;
+	float ySpeed = dt *10000.0f;
 
 	if (aPtr != nullptr)
 	{
@@ -167,8 +178,10 @@ int Entity::UpdatePlayer(lua_State *L)
 	Entity* aPtr = nullptr;
 	aPtr = CheckEntity(L, 1);
 
-	float xSpeed = 0.05f;
-	float ySpeed = 0.05f;
+	float dt = lua_tonumber(L, 2);
+
+	float xSpeed = dt *10000.0f;
+	float ySpeed = dt *10000.0f;
 
 	if (aPtr != nullptr)
 	{
