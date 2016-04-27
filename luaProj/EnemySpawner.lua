@@ -5,7 +5,7 @@ function test ()
 end
 
 function speedx (toSpawnX)
-	speedX = math.random (1, 100)
+	speedX = math.random (50, 100)
 	speedX = speedX * 0.01
 	if (640 - toSpawnX < toSpawnX) then
 		speedX = speedX * - 1
@@ -15,7 +15,7 @@ function speedx (toSpawnX)
 end
 
 function speedy (toSpawnY)
-	speedY = math.random (1, 100)
+	speedY = math.random (50, 100)
 	speedY = speedY * 0.01;
 
 	if(480 - toSpawnY < toSpawnY) then

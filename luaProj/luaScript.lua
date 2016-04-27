@@ -5,7 +5,10 @@ Player = Entity.New(320, 240, 0.5, 0.5, 10, 10)
 Enemies = {}
 Walls = {}
 engi = Engine
-nrOfEnemies = 3
+nrOfEnemies = 0
+
+xPos = 0;   -- temp values
+yPos = 0;	-- temp values
 
 
 
@@ -28,10 +31,59 @@ end
 
 function spawnBullet(var1, var2, var3, var4, width, height)
 	table.insert(Enemies ,Entity.New(var1, var2, var3, var4, width, height))
-    --print("enemy created")
+--print("enemy created")
 end
 
-function readFile()
+function destroyOutsideBullets()
+
+	for i=1, #Enemies
+	do
+		Enemies[i]:getPos();
+		
+		if xPos > 700 then
+			--destroy that shit
+			test = table.remove(Enemies,i)
+			nrOfEnemies = nrOfEnemies - 1
+			break
+		end
+
+		if yPos > 500 then
+			--destroy that shit
+			table.remove(Enemies,i)
+			nrOfEnemies = nrOfEnemies - 1
+			break
+		end
+		if xPos < -50 then
+			table.remove(Enemies,i)
+			nrOfEnemies = nrOfEnemies - 1
+			break
+		end
+
+		if (yPos < -50) then
+			table.remove(Enemies,i)
+			nrOfEnemies = nrOfEnemies - 1
+			break
+		end
+	end
+
+end
+
+function spawnEnemy()
+	print(nrOfEnemies)
+	if nrOfEnemies < 50 then
+		spawnX, spawnY, spawnSpeedX, spawnSpeedY = spawnPos();
+
+		width = getWidth()
+		height = getHeight()
+
+		spawnBullet (spawnX, spawnY, spawnSpeedX, spawnSpeedY, width, height)
+
+		nrOfEnemies = nrOfEnemies + 1
+		print("spawed an enemy")
+	end	
+end
+
+	function readFile()
 	local file = io.open("filename.txt", "r")
 
 	local contentX = "-1"
@@ -69,24 +121,14 @@ do
 
 	--Player:Update()
 	Player:UpdatePlayer()
+	spawnEnemy()
 
-	if nrOfEnemies < 100 then
-		spawnX, spawnY, spawnSpeedX, spawnSpeedY = spawnPos();
-
-		width = getWidth()
-		height = getHeight()
-
-		spawnBullet (spawnX, spawnY, spawnSpeedX, spawnSpeedY, width, height)
-
-		nrOfEnemies = nrOfEnemies + 1
-	end
 	for y=1, #Enemies
 	do
 		Enemies[y]:Update ()
 		engi.intersectionTest (Player, Enemies[y])
-
 	end
-	
+	destroyOutsideBullets()
 
 	render()
 end
