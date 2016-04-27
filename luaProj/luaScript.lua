@@ -74,12 +74,8 @@ do
 	--Player:Update()
 	Player:UpdatePlayer()
 
-	if nrOfEnemies < 1 then
-		spawnX = spawnXPos()
-		spawnY = spawnYPos()
-
-		spawnSpeedX = speedx(spawnX)
-		spawnSpeedY = speedy(spawnY)
+	if nrOfEnemies < 100 then
+		spawnX, spawnY, spawnSpeedX, spawnSpeedY = spawnPos();
 
 		width = getWidth()
 		height = getHeight()
