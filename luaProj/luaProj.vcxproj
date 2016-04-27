@@ -177,6 +177,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Doge_Much_wow.jpg" />
+    <Image Include="Doge_Swag.png" />
+    <Image Include="next_level_swag_doge.png" />
+    <Image Include="pleb.jpg" />
+    <Image Include="top_pleb.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

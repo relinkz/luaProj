@@ -6,9 +6,10 @@ using namespace std;
 //lua funktion som skapar spelare
 
 sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!");
+//sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!", sf::Style::Fullscreen);
 sf::Event event;
 sf::Font gameFont;
-std::vector<sf::Sprite*> textures;
+std::vector<sf::Texture*> textures;
 
 lua_State *L;
 
@@ -27,6 +28,7 @@ Entity* CheckEntity(lua_State *L, int i);
 
 static int renderPlayer(lua_State* L);
 static int renderEnemy(lua_State *L);
+static int renderParticle(lua_State *L);
 static int printScore(lua_State *L);
 
 static int windowDisplay(lua_State *L);
@@ -38,6 +40,7 @@ sf::Text text;
 
 
 void renderBox(float x, float y);
+void loadTextures();
 
 int main()
 {	
@@ -49,17 +52,8 @@ int main()
 	{
 		cout << "error i font load" << endl;
 	}
-	textures.push_back(new sf::Sprite());
-	sf::Texture temp;
-	if (!temp.loadFromFile("Doge_Much_wow.jpg"))
-	{
-		cout << "error i texture load" << endl;
-	}
-	else
-	{
-		textures.at(textures.size() - 1)->setTexture(temp);
-	}
 	text.setFont(gameFont);
+	loadTextures();
 
 
 	playGame();
@@ -131,21 +125,66 @@ static int renderWall(lua_State *L)
 	return 0; // because fack you, thats why!
 }
 
+static int renderParticle(lua_State *L)
+{
+	Entity* aPtr = Entity::CheckEntity(L, 1);
+
+	int index = lua_tonumber(L, 2);
+	if (index < 0)
+	{
+		index = 0;
+	}
+	if (index >= textures.size())
+	{
+		index = textures.size() - 1;
+	}
+
+	if (aPtr != nullptr)
+	{
+		sf::Sprite temp;
+		float x = aPtr->getXPos();
+		float y = aPtr->getYPos();
+
+		temp.setPosition(x, y);
+		temp.setTexture(*textures.at(index));
+
+		window.draw(temp);
+	}
+
+	//window.draw(*textures.at(0));
+
+	return 0; // because fack you, thats why!
+}
+
 static int printScore(lua_State *L)
 {
 	string score = lua_tostring(L, 1);
-
+	int SWAG_SCORE = lua_tonumber(L, 1);
 	text.setString("score: " + score);
 
 	text.setCharacterSize(24);
 
 	text.setColor(sf::Color::White);
 
-
 	text.setPosition(0, 0);
+	int width = text.getLocalBounds().width;
+	sf::Sprite temp;
+	temp.setPosition(width + 10, 0);
+	int index = 0;
+	for (int i = 1; i <= textures.size(); i++)
+	{
+		if (SWAG_SCORE > (5000 / textures.size()) * i)
+		{
+			index++;
+		}
+	}
+	if (index >= textures.size())
+	{
+		index = textures.size() - 1;
+	}
+	temp.setTexture(*textures.at(index));
 
-	//window.draw(*textures.at(0));
-
+	window.draw(temp);
 	window.draw(text);
 
 	return 0;
@@ -172,6 +211,7 @@ static int intersectionTest(lua_State *L)
 	Enemy = Entity::CheckEntity(L, 2);
 
 	int counter = lua_tonumber(L, 3);
+	int enemiesClose = lua_tonumber(L, 4);
 
 	float xDiff = abs(Player->getXPos() - Enemy->getXPos());
 	float yDiff = abs(Player->getYPos() - Enemy->getYPos());
@@ -179,21 +219,25 @@ static int intersectionTest(lua_State *L)
 	if (xDiff < 14 && yDiff < 14)
 	{
 		counter++;
+		enemiesClose++;
 	}
 
 	lua_pushinteger(L, counter);
 	lua_setglobal(L, "bonusScoreCounter");
+
+	lua_pushinteger(L, enemiesClose);
+	lua_setglobal(L, "enemiesClose");
 
 	sf::IntRect playerRect(Player->getXPos(), Player->getYPos(), Player->getWidth(), Player->getHeight());
 	sf::IntRect enenmyRect(Enemy->getXPos(), Enemy->getYPos(), Enemy->getWidth(), Enemy->getHeight());
 
 	bool result = playerRect.intersects(enenmyRect);
 
-	if (result)
+	/*if (result)
 	{
 		cout << "You died" << endl;
 		system("pause");
-	}
+	}*/
 
 	return 0;
 }
@@ -368,6 +412,7 @@ void registerEngineFunctions(lua_State * L)
 		{ "wallIntersectionTest",	wallIntersectionTest },
 		{ "getInput",				getInput },
 		{ "printScore",				printScore },
+		{ "renderParticle",			renderParticle },
 		{ NULL, NULL }
 	};
 
@@ -397,4 +442,35 @@ void playGame()
 	{
 		cerr << lua_tostring(L, -1) << endl;
 	}*/
+}
+
+void loadTextures()
+{
+	textures.push_back(new sf::Texture());
+	if (!textures.at(textures.size() - 1)->loadFromFile("pleb.jpg"))
+	{
+		cout << "error i texture load" << endl;
+	}
+	textures.push_back(new sf::Texture());
+	if (!textures.at(textures.size() - 1)->loadFromFile("top_pleb.jpg"))
+	{
+		cout << "error i texture load" << endl;
+	}
+	textures.push_back(new sf::Texture());
+	if (!textures.at(textures.size() - 1)->loadFromFile("Doge_Much_wow_small.jpg"))
+	{
+		cout << "error i texture load" << endl;
+	}
+	textures.push_back(new sf::Texture());
+	if (!textures.at(textures.size() - 1)->loadFromFile("Doge_Swag.png"))
+	{
+		cout << "error i texture load" << endl;
+	}
+	textures.push_back(new sf::Texture());
+	if (!textures.at(textures.size() - 1)->loadFromFile("next_level_swag_doge.png"))
+	{
+		cout << "error i texture load" << endl;
+	}
+
+
 }

@@ -73,5 +73,17 @@
     <Image Include="Doge_Much_wow.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Doge_Swag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="next_level_swag_doge.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="pleb.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="top_pleb.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
