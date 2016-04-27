@@ -167,6 +167,7 @@
     <None Include="EnemySpawner.lua" />
     <None Include="levelEditorScript.lua" />
     <None Include="luaScript.lua" />
+    <None Include="menuScript.lua" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="filename.txt" />

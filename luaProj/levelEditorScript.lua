@@ -1,13 +1,14 @@
-Player = Entity.New(98, 98, 0.0, 0.0,10,10)
-Walls = {}
+--Player = Entity.New(98, 98, 0.0, 0.0,10,10)
+--Walls = {}
 xPos = -1
 yPos = -1
 input = -1
 inputDelay = 0
 intersectionTest = 1
-engi = Engine
+--engi = Engine
+done = -1
 
-function render()
+function levleEditorRender()
 	engi.windowClear()
 
 	engi.renderPlayer(Player)
@@ -64,7 +65,8 @@ function saveToFile()
 	end
 
 	io.close(file)
-	os.exit()
+	--os.exit()
+	done = 1
 
 end
 function handleInput()
@@ -106,11 +108,17 @@ function handleInput()
 
 
 end
-readFile()
-while(true)
+function LevelEditor()
 do
-	Player:UpdatePlayer()
-	handleInput()
-	inputDelay = inputDelay + 1
-	render()
+	readFile()
+	while(done == -1)
+	do
+		Player:UpdatePlayer()
+		handleInput()
+		inputDelay = inputDelay + 1
+		levleEditorRender()
+	end
+	count = #Walls
+	for i=0, count do Walls[i]=nil end
+end
 end

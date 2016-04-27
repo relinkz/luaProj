@@ -1,11 +1,11 @@
 print(package.path)
 require("EnemySpawner")
 
-Player = Entity.New(320, 240, 0.5, 0.5, 10, 10)
+--Player = Entity.New(320, 240, 0.5, 0.5, 10, 10)
 Enemies = {}
 Walls = {}
 Particles = {}
-engi = Engine
+--engi = Engine
 nrOfEnemies = 3
 SWAG_SCORE = 0
 bonusScoreCounter = 0
@@ -15,16 +15,7 @@ yPos = 0
 counter = 0
 nrOfEnemies = 0
 
-table.insert(Enemies ,Entity.New(100, 100, 0.0, 0.0, 10, 10))
-
-table.insert(Enemies ,Entity.New(200, 100, 0.0, 0.0, 10, 10))
-table.insert(Enemies ,Entity.New(200, 100, 0.0, 0.0, 10, 10))
-
-table.insert(Enemies ,Entity.New(300, 100, 0.0, 0.0, 10, 10))
-table.insert(Enemies ,Entity.New(300, 100, 0.0, 0.0, 10, 10))
-table.insert(Enemies ,Entity.New(300, 100, 0.0, 0.0, 10, 10))
-
-function render()
+function gameRender()
 	engi.windowClear()
 	engi.renderPlayer(Player)
 	engi.renderEnemy(Enemy)
@@ -47,7 +38,6 @@ end
 
 function spawnBullet(var1, var2, var3, var4, width, height)
 	table.insert(Enemies ,Entity.New(var1, var2, var3, var4, width, height))
---print("enemy created")
 end
 
 function destroyOutsideBullets()
@@ -85,7 +75,6 @@ function destroyOutsideBullets()
 end
 
 function spawnEnemy()
-	print(nrOfEnemies)
 	if nrOfEnemies < 50 then
 		spawnX, spawnY, spawnSpeedX, spawnSpeedY = spawnPos();
 
@@ -95,11 +84,10 @@ function spawnEnemy()
 		spawnBullet (spawnX, spawnY, spawnSpeedX, spawnSpeedY, width, height)
 
 		nrOfEnemies = nrOfEnemies + 1
-		print("spawed an enemy")
 	end	
 end
 
-	function readFile()
+function spawnWalls()
 	local file = io.open("filename.txt", "r")
 
 	local contentX = "-1"
@@ -126,47 +114,51 @@ end
 	end
 	io.close(file)
 end
-
-readFile()
-while(true)
+function Main()
 do
-	enemiesClose = -1
-	for y=1, #Walls
+	spawnWalls()
+	while(true)
 	do
-		engi.wallIntersectionTest(Player, Walls[y], 1) 
+		enemiesClose = -1
+		for y=1, #Walls
+		do
+			engi.wallIntersectionTest(Player, Walls[y], 1) 
+		end
+
+		--Player:Update()
+		Player:UpdatePlayer()
+
+		for y=1, #Particles
+		do
+			Particles[y]:Update()
+		end
+
+		spawnEnemy()
+		for y=1, #Enemies
+		do
+			Enemies[y]:Update ()
+			engi.intersectionTest (Player, Enemies[y], bonusScoreCounter, enemiesClose)
+
+		end
+		destroyOutsideBullets()
+
+
+		if #Particles >= 1 then
+			counter = counter + 1
+		end
+		if counter > 200 then
+			table.remove(Particles, 1)
+			counter = 0
+		end
+		if bonusScoreCounter >= 200 then
+			bonusScoreCounter = 0
+			SWAG_SCORE = SWAG_SCORE + 50
+			Player:getPos();
+			table.insert(Particles ,Entity.New(xPos, yPos - 10, 0.0, -0.5, 100, 100))
+		end
+
+		gameRender()
+
 	end
-
-	--Player:Update()
-	Player:UpdatePlayer()
-
-	for y=1, #Particles
-	do
-		Particles[y]:Update()
-	end
-
-	spawnEnemy()
-	for y=1, #Enemies
-	do
-		Enemies[y]:Update ()
-		engi.intersectionTest (Player, Enemies[y], bonusScoreCounter, enemiesClose)
-
-	end
-	destroyOutsideBullets()
-
-
-	if #Particles >= 1 then
-		counter = counter + 1
-	end
-	if counter > 200 then
-		table.remove(Particles, 1)
-		counter = 0
-	end
-	if bonusScoreCounter >= 200 then
-		bonusScoreCounter = 0
-		SWAG_SCORE = SWAG_SCORE + 50
-		Player:getPos();
-		table.insert(Particles ,Entity.New(xPos, yPos - 10, 0.0, -0.5, 100, 100))
-	end
-
-	render()
+end
 end

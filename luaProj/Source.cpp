@@ -29,6 +29,7 @@ Entity* CheckEntity(lua_State *L, int i);
 static int renderPlayer(lua_State* L);
 static int renderEnemy(lua_State *L);
 static int renderParticle(lua_State *L);
+static int renderMenu(lua_State *L);
 static int printScore(lua_State *L);
 
 static int windowDisplay(lua_State *L);
@@ -43,7 +44,8 @@ void renderBox(float x, float y);
 void loadTextures();
 
 int main()
-{	
+{
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	initializeLua();
 	registerEntityFunctions(L);
 	registerEngineFunctions(L);
@@ -156,6 +158,43 @@ static int renderParticle(lua_State *L)
 	return 0; // because fack you, thats why!
 }
 
+static int renderMenu(lua_State *L)
+{
+	Entity* aPtr = Entity::CheckEntity(L, 1);
+	int buttonType = lua_tonumber(L, 2);
+
+	if (aPtr != nullptr)
+	{
+		float x = aPtr->getXPos();
+		float y = aPtr->getYPos();
+		if (buttonType == 1)
+		{
+			text.setString("Play");
+		}
+		if (buttonType == 2)
+		{
+			text.setString("Level Editor");
+		}
+		if (buttonType == 3)
+		{
+			text.setString("Exit");
+		}
+		sf::RectangleShape shape(sf::Vector2f(aPtr->getWidth(), aPtr->getHeight()));
+		shape.setFillColor(sf::Color::Blue);
+		shape.setPosition(x, y);
+		window.draw(shape);
+
+		text.setPosition(x, y);
+
+		text.setCharacterSize(24);
+
+		text.setColor(sf::Color::White);
+
+		window.draw(text);
+	}
+	return 0;
+}
+
 static int printScore(lua_State *L)
 {
 	string score = lua_tostring(L, 1);
@@ -238,6 +277,36 @@ static int intersectionTest(lua_State *L)
 		cout << "You died" << endl;
 		system("pause");
 	}*/
+
+	return 0;
+}
+
+static int buttonIntersectionTest(lua_State *L)
+{
+	bool result = false;
+
+	Entity* Player = nullptr;
+	Player = Entity::CheckEntity(L, 1);
+
+	Entity* Button = nullptr;
+	Button = Entity::CheckEntity(L, 2);
+
+	sf::IntRect playerRect(Player->getXPos(), Player->getYPos(), Player->getWidth(), Player->getHeight());
+	sf::IntRect enenmyRect(Button->getXPos(), Button->getYPos(), Button->getWidth(), Button->getHeight());
+
+	result = playerRect.intersects(enenmyRect);
+
+
+	if (result)
+	{
+		lua_pushinteger(L, -1);
+		lua_setglobal(L, "intersectionTest");
+	}
+	else
+	{
+		lua_pushinteger(L, 1);
+		lua_setglobal(L, "intersectionTest");
+	}
 
 	return 0;
 }
@@ -413,6 +482,8 @@ void registerEngineFunctions(lua_State * L)
 		{ "getInput",				getInput },
 		{ "printScore",				printScore },
 		{ "renderParticle",			renderParticle },
+		{ "renderMenu",				renderMenu },
+		{ "buttonIntersectionTest", buttonIntersectionTest },
 		{ NULL, NULL }
 	};
 
@@ -430,12 +501,19 @@ void registerEngineFunctions(lua_State * L)
 
 void playGame()
 {
-	int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
+	int error = luaL_loadfile(L, "menuScript.lua") || lua_pcall(L, 0, 1, 0);
+
+	if (error)
+	{
+		cerr << lua_tostring(L, -1) << endl;
+	}
+	
+	/*int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
 
 	if (error)
 	{
 		cerr << lua_tostring(L,-1) << endl;
-	}
+	}*/
 	/*int error = luaL_loadfile(L, "levelEditorScript.lua") || lua_pcall(L, 0, 1, 0);
 
 	if (error)
