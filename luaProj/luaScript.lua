@@ -4,8 +4,11 @@ require("EnemySpawner")
 Player = Entity.New(0, 0, 0.5, 0.5, 10, 10)
 Enemies = {}
 Walls = {}
+Particles = {}
 engi = Engine
 nrOfEnemies = 3
+SWAG_SCORE = 0
+bonusScoreCounter = 0
 
 
 
@@ -22,7 +25,7 @@ function render()
 	do
 		engi.renderWall(Walls[y])
 	end
-
+	engi.printScore(SWAG_SCORE)
 	engi.windowDisplay()
 end
 
@@ -87,10 +90,15 @@ do
 	for y=1, #Enemies
 	do
 		Enemies[y]:Update ()
-		engi.intersectionTest (Player, Enemies[y])
+		engi.intersectionTest (Player, Enemies[y], bonusScoreCounter)
 
 	end
-	
+	print(bonusScoreCounter)
+	if bonusScoreCounter >= 50 then
+		bonusScoreCounter = 0
+		SWAG_SCORE = SWAG_SCORE + 50
+	end
+
 
 	render()
 end

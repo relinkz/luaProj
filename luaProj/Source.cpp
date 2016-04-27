@@ -7,6 +7,8 @@ using namespace std;
 
 sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!");
 sf::Event event;
+sf::Font gameFont;
+std::vector<sf::Sprite*> textures;
 
 lua_State *L;
 
@@ -25,11 +27,14 @@ Entity* CheckEntity(lua_State *L, int i);
 
 static int renderPlayer(lua_State* L);
 static int renderEnemy(lua_State *L);
+static int printScore(lua_State *L);
 
 static int windowDisplay(lua_State *L);
 static int windowClear(lua_State *L);
 
 void playGame();
+
+sf::Text text;
 
 
 void renderBox(float x, float y);
@@ -39,6 +44,23 @@ int main()
 	initializeLua();
 	registerEntityFunctions(L);
 	registerEngineFunctions(L);
+
+	if (!gameFont.loadFromFile("imagine_font.ttf"))
+	{
+		cout << "error i font load" << endl;
+	}
+	textures.push_back(new sf::Sprite());
+	sf::Texture temp;
+	if (!temp.loadFromFile("Doge_Much_wow.jpg"))
+	{
+		cout << "error i texture load" << endl;
+	}
+	else
+	{
+		textures.at(textures.size() - 1)->setTexture(temp);
+	}
+	text.setFont(gameFont);
+
 
 	playGame();
 
@@ -109,6 +131,26 @@ static int renderWall(lua_State *L)
 	return 0; // because fack you, thats why!
 }
 
+static int printScore(lua_State *L)
+{
+	string score = lua_tostring(L, 1);
+
+	text.setString("score: " + score);
+
+	text.setCharacterSize(24);
+
+	text.setColor(sf::Color::White);
+
+
+	text.setPosition(0, 0);
+
+	//window.draw(*textures.at(0));
+
+	window.draw(text);
+
+	return 0;
+}
+
 static int windowClear(lua_State *L)
 {
 	window.clear();
@@ -128,7 +170,20 @@ static int intersectionTest(lua_State *L)
 	
 	Entity* Enemy = nullptr;
 	Enemy = Entity::CheckEntity(L, 2);
-	
+
+	int counter = lua_tonumber(L, 3);
+
+	float xDiff = abs(Player->getXPos() - Enemy->getXPos());
+	float yDiff = abs(Player->getYPos() - Enemy->getYPos());
+
+	if (xDiff < 14 && yDiff < 14)
+	{
+		counter++;
+	}
+
+	lua_pushinteger(L, counter);
+	lua_setglobal(L, "bonusScoreCounter");
+
 	sf::IntRect playerRect(Player->getXPos(), Player->getYPos(), Player->getWidth(), Player->getHeight());
 	sf::IntRect enenmyRect(Enemy->getXPos(), Enemy->getYPos(), Enemy->getWidth(), Enemy->getHeight());
 
@@ -312,6 +367,7 @@ void registerEngineFunctions(lua_State * L)
 		{ "intersectionTest",		intersectionTest},
 		{ "wallIntersectionTest",	wallIntersectionTest },
 		{ "getInput",				getInput },
+		{ "printScore",				printScore },
 		{ NULL, NULL }
 	};
 

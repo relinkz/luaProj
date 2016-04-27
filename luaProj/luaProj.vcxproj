@@ -171,6 +171,13 @@
   <ItemGroup>
     <Text Include="filename.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="imagine_font.otf" />
+    <Font Include="imagine_font.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Doge_Much_wow.jpg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
