@@ -4,34 +4,78 @@ function test ()
 	print("it works!")
 end
 
-function spawnYPos()
-	windowWidth = 480
-	spawnY = math.random (10, windowWidth);
-	return spawnY
-end
-
-function spawnXPos()
-	windowWidth = 640
-	spawnX = math.random (10, windowWidth);
-	return spawnX
-
-end
-
 function speedx (toSpawnX)
 	speedX = math.random (1, 100)
 	speedX = speedX * 0.01
 	if (640 - toSpawnX < toSpawnX) then
-		speedX = speedX *  -1
+		speedX = speedX * - 1
 	end
 
 	return speedX
 end
 
 function speedy (toSpawnY)
-	speedY = 0.02
+	speedY = math.random (1, 100)
+	speedY = speedY * 0.01;
+
 	if(480 - toSpawnY < toSpawnY) then
 		speedY = speedY * - 1
 	end
 
 	return speedY
+end
+
+function findOutClosestSide (xPos, yPos, xMax, yMax)
+	finalXPos = 0;
+	finalYPos = 0;
+
+	distanceX = xMax - xPos;
+	distanceY = yMax - yPos;
+
+	finalSpeedX = 0;
+	finalSpeedY = 0;
+
+	sideToSpawn = math.random(0,1);
+
+	if(sideToSpawn == 0) then
+
+		if(distanceX < xPos) then --left or right
+			-- left side
+			finalYPos = yPos;
+			finalXPos = xMax
+		else
+			--right
+			finalXPos = 0;
+			finalYPos = yPos;
+		end
+		finalSpeedX = speedx (finalXPos);
+	else	--top or bot
+		if(distanceY < yPos) then
+			finalXPos = xPos
+			finalYPos = yMax;
+		else
+			finalYPos = 0;
+			finalXPos = xPos;
+		end
+		finalSpeedY = speedy (finalYPos)
+	end
+
+		return finalXPos, finalYPos, finalSpeedX, finalSpeedY;
+
+
+end
+
+function spawnPos()
+	windowHeight = 480;
+	halfWindowHeight = (windowHeight / 2);
+
+	windowWidth = 640
+	halfWindowHeight = (windowWidth / 2);
+
+	spawnY = math.random (10, windowWidth);
+	spawnX = math.random (10, windowHeight);
+	--spawnX = windowWidth;
+	spawnX, spawnY, leSpeedX, leSpeedY = findOutClosestSide (spawnX, spawnY, windowWidth, windowHeight);
+
+	return spawnX,spawnY, leSpeedX, leSpeedY;
 end

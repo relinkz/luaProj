@@ -72,11 +72,13 @@ do
 	Player:UpdatePlayer()
 
 	if nrOfEnemies < 100 then
-		spawnX = spawnXPos()
-		spawnY = spawnYPos()
+		--spawnX = spawnXPos()
+		--spawnY = spawnYPos()
 
-		spawnSpeedX = speedx(spawnX)
-		spawnSpeedY = speedy(spawnY)
+		spawnX, spawnY, spawnSpeedX, spawnSpeedY = spawnPos();
+
+		--spawnSpeedX = speedx(spawnX)
+		--spawnSpeedY = speedy(spawnY)
 
 		spawnBullet (spawnX, spawnY, spawnSpeedX, spawnSpeedY)
 
