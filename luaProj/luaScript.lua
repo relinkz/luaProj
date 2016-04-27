@@ -6,7 +6,6 @@ Enemies = {}
 Walls = {}
 Particles = {}
 engi = Engine
-<<<<<<< HEAD
 nrOfEnemies = 3
 SWAG_SCORE = 0
 bonusScoreCounter = 0
@@ -14,12 +13,7 @@ enemiesClose = 0
 xPos = 0
 yPos = 0
 counter = 0
-=======
 nrOfEnemies = 0
-
-xPos = 0;   -- temp values
-yPos = 0;	-- temp values
->>>>>>> master
 
 table.insert(Enemies ,Entity.New(100, 100, 0.0, 0.0, 10, 10))
 
