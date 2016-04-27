@@ -113,10 +113,14 @@ do
 	readFile()
 	while(done == -1)
 	do
-		Player:UpdatePlayer()
+		engi.getGameTime();
+		Player:UpdatePlayer(gameTime)
+
 		handleInput()
 		inputDelay = inputDelay + 1
 		levleEditorRender()
+
+		engi.resetGameTime();
 	end
 	count = #Walls
 	for i=0, count do Walls[i]=nil end

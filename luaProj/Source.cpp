@@ -1,5 +1,6 @@
 #include <string>
 #include "Entity.h"
+#include "sfml/System.hpp"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!");
 //sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!", sf::Style::Fullscreen);
 sf::Event event;
 sf::Font gameFont;
+sf::Clock gameClock;
 std::vector<sf::Texture*> textures;
 
 lua_State *L;
@@ -31,6 +33,9 @@ static int renderEnemy(lua_State *L);
 static int renderParticle(lua_State *L);
 static int renderMenu(lua_State *L);
 static int printScore(lua_State *L);
+
+static int sendTimeToLua(lua_State *L);
+static int resetTime(lua_State *L);
 
 static int windowDisplay(lua_State *L);
 static int windowClear(lua_State *L);
@@ -271,12 +276,13 @@ static int intersectionTest(lua_State *L)
 	sf::IntRect enenmyRect(Enemy->getXPos(), Enemy->getYPos(), Enemy->getWidth(), Enemy->getHeight());
 
 	bool result = playerRect.intersects(enenmyRect);
-
-	/*if (result)
+/*
+	if (result)
 	{
 		cout << "You died" << endl;
 		system("pause");
-	}*/
+	}
+	*/
 
 	return 0;
 }
@@ -484,6 +490,8 @@ void registerEngineFunctions(lua_State * L)
 		{ "renderParticle",			renderParticle },
 		{ "renderMenu",				renderMenu },
 		{ "buttonIntersectionTest", buttonIntersectionTest },
+		{ "getGameTime",			sendTimeToLua },
+		{"resetGameTime",			resetTime},
 		{ NULL, NULL }
 	};
 
@@ -514,6 +522,8 @@ void playGame()
 	{
 		cerr << lua_tostring(L,-1) << endl;
 	}*/
+	//lua_getglobal(L,"Main");
+	//error = lua_pcall(L, 0, 1, 0);
 	/*int error = luaL_loadfile(L, "levelEditorScript.lua") || lua_pcall(L, 0, 1, 0);
 
 	if (error)
@@ -549,6 +559,22 @@ void loadTextures()
 	{
 		cout << "error i texture load" << endl;
 	}
+}
 
+int sendTimeToLua(lua_State *L)
+{
+	sf::Time eTime = gameClock.getElapsedTime();
+	float s = eTime.asSeconds();
+	lua_pushnumber(L,s);
+	lua_setglobal(L, "gameTime");
 
+	return 1;
+}
+
+int resetTime(lua_State *L)
+{
+	gameClock.restart().asSeconds();
+	
+
+	return 0;
 }

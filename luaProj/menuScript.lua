@@ -2,7 +2,7 @@ print(package.path)
 require("levelEditorScript")
 require("luaScript")
 
-Player = Entity.New(320, 240, 0.5, 0.5, 10, 10)
+Player = Entity.New(150, 50, 0.5, 0.5, 10, 10)
 Buttons = {}
 Walls = {}
 engi = Engine
@@ -10,6 +10,7 @@ SWAG_SCORE = 0
 buttonPressed = -1
 intersectiontest = -1
 input = -1
+gameTime = 0;
 
 table.insert(Buttons, Entity.New(150, 0,  0.0, 0.0, 200, 140))
 table.insert(Buttons, Entity.New(150, 150, 0.0, 0.0, 200, 140))
@@ -30,8 +31,8 @@ end
 
 while(buttonPressed ~= 3)
 do
-
-	Player:UpdatePlayer()
+	engi.getGameTime();
+	Player:UpdatePlayer(gameTime)
 
 	engi.getInput()
 	if input == 1 then
@@ -54,5 +55,6 @@ do
 	if buttonPressed == 2 then
 		LevelEditor()
 	end
+	engi.resetGameTime();
 
 end
