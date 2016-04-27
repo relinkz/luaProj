@@ -1,7 +1,7 @@
 print(package.path)
 require("EnemySpawner")
 
-Player = Entity.New(320, 240, 0.5, 0.5, 10, 10)
+Player = Entity.New(320, 240, 10, 10, 10, 10)
 Enemies = {}
 Walls = {}
 engi = Engine
