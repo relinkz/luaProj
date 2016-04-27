@@ -1,7 +1,7 @@
 print(package.path)
 require("EnemySpawner")
 
-Player = Entity.New(0, 0, 0.0, 0.0)
+Player = Entity.New(0, 0, 0.0, 0.0, 10, 10)
 Enemies = {}
 Walls = {}
 engi = Engine
@@ -26,8 +26,8 @@ function render()
 	engi.windowDisplay()
 end
 
-function spawnBullet(var1, var2, var3, var4)
-	table.insert(Enemies ,Entity.New(var1, var2, var3, var4))
+function spawnBullet(var1, var2, var3, var4, width, height)
+	table.insert(Enemies ,Entity.New(var1, var2, var3, var4, width, height))
     --print("enemy created")
 end
 
@@ -76,7 +76,10 @@ do
 		spawnSpeedX = speedx(spawnX)
 		spawnSpeedY = speedy(spawnY)
 
-		spawnBullet (spawnX, spawnY, spawnSpeedX, spawnSpeedY)
+		width = getWidth()
+		height = getHeight()
+
+		spawnBullet (spawnX, spawnY, spawnSpeedX, spawnSpeedY, width, height)
 
 		nrOfEnemies = nrOfEnemies + 1
 	end

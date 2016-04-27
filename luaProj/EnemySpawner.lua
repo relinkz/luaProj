@@ -35,3 +35,15 @@ function speedy (toSpawnY)
 
 	return speedY
 end
+function getWidth()
+	maxWidth = 50
+	width = math.random (10, maxWidth);
+	return width
+
+end
+function getHeight()
+	maxHeight = 50
+	height = math.random (10, maxHeight);
+	return height
+
+end

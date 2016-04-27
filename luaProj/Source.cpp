@@ -62,7 +62,9 @@ static int renderPlayer(lua_State *L)
 	{
 		float x = aPtr->getXPos();
 		float y = aPtr->getYPos();
-		sf::RectangleShape shape(sf::Vector2f(10, 10));
+		int width = aPtr->getWidth();
+		int height = aPtr->getHeight();
+		sf::RectangleShape shape(sf::Vector2f(width, height));
 		shape.setFillColor(sf::Color::Green);
 		shape.setPosition(x, y);
 		window.draw(shape);
@@ -78,7 +80,9 @@ static int renderEnemy(lua_State *L)
 	{
 		float x = aPtr->getXPos();
 		float y = aPtr->getYPos();
-		sf::RectangleShape shape(sf::Vector2f(10, 10));
+		int width = aPtr->getWidth();
+		int height = aPtr->getHeight();
+		sf::RectangleShape shape(sf::Vector2f(width, height));
 		shape.setFillColor(sf::Color::Red);
 		shape.setPosition(x, y);
 		window.draw(shape);
@@ -124,10 +128,8 @@ static int intersectionTest(lua_State *L)
 	Entity* Enemy = nullptr;
 	Enemy = Entity::CheckEntity(L, 2);
 	
-	sf::RectangleShape ap;
-	
-	sf::IntRect playerRect(Player->getXPos(), Player->getYPos(), 10, 10);
-	sf::IntRect enenmyRect(Enemy->getXPos(), Enemy->getYPos(), 10, 10);
+	sf::IntRect playerRect(Player->getXPos(), Player->getYPos(), Player->getWidth(), Player->getHeight());
+	sf::IntRect enenmyRect(Enemy->getXPos(), Enemy->getYPos(), Enemy->getWidth(), Enemy->getHeight());
 
 	bool result = playerRect.intersects(enenmyRect);
 
@@ -202,10 +204,10 @@ static int getInput(lua_State *L)
 bool intersectX(Entity* Player, Entity* Enemy)
 {
 	bool intersect = false;
-	if (Player->getXPos() > Enemy->getXPos() && Player->getXPos() < Enemy->getXPos() + Enemy->getSideLength())
+	/*if (Player->getXPos() > Enemy->getXPos() && Player->getXPos() < Enemy->getXPos() + Enemy->getSideLength())
 	{
 		intersect = true;
-	}
+	}*/
 	/*if (Player->getXPos() + Player->getSideLength() < (Enemy->getXPos()))
 	{
 		//no intersect

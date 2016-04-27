@@ -31,10 +31,11 @@ Entity::Entity()
 	this->xPos = 0;
 	this->yPos = 0;
 
-	this->sideLength = 10;
+	this->width = 10;
+	this->height = 10;
 }
 
-Entity::Entity(float x, float y, float xDir, float yDir)
+Entity::Entity(float x, float y, float xDir, float yDir, int width, int height)
 {
 	this->xPos = x;
 	this->yPos = y;
@@ -42,7 +43,8 @@ Entity::Entity(float x, float y, float xDir, float yDir)
 	this->xDir = xDir;
 	this->yDir = yDir;
 
-	this->sideLength = 10;
+	this->width = width;
+	this->height = height;
 }
 
 Entity::~Entity()
@@ -80,9 +82,14 @@ void Entity::move(float xDir,float  yDir)
 	this->yPos += yDir;
 }
 
-float Entity::getSideLength() const
+
+int Entity::getWidth() const
 {
-	return this->sideLength;
+	return this->width;
+}
+int Entity::getHeight() const
+{
+	return this->height;
 }
 
 Entity* Entity::CheckEntity(lua_State * L, int i)
@@ -119,9 +126,12 @@ int Entity::New(lua_State * L)
 	float xDir = lua_tonumber(L, 3);
 	float yDir = lua_tonumber(L, 4);
 
+	int width = lua_tonumber(L, 5);
+	int height = lua_tonumber(L, 6);
+
 	Entity** entity = reinterpret_cast<Entity**>(lua_newuserdata(L, sizeof(Entity*)));
 
-	*entity = new Entity(x, y, xDir, yDir);
+	*entity = new Entity(x, y, xDir, yDir, width, height);
 	//std::cout
 		//<< "xValue" << x << std::endl
 		//<< "yValue" << y << std::endl;
@@ -145,6 +155,7 @@ int Entity::UpdatePlayer(lua_State *L)
 		{
 			aPtr->move(-xSpeed, 0.0f);
 		}
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			aPtr->move(0.0f, -ySpeed);

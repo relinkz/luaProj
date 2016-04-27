@@ -15,10 +15,11 @@ private:
 	float xDir;
 	float yDir;
 
-	float sideLength;
+	int width;
+	int height;
 public:
 	Entity();
-	Entity(float x, float y, float xDir, float yDir);
+	Entity(float x, float y, float xDir, float yDir,int width, int height);
 	virtual ~Entity();
 
 	float getXPos() const;
@@ -30,7 +31,8 @@ public:
 	void move();
 	void move(float xDif,float yDir);
 
-	float getSideLength() const;
+	int getWidth() const;
+	int getHeight() const;
 	
 	static Entity* CheckEntity(lua_State * L, int i);
 
