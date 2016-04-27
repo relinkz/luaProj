@@ -61,4 +61,29 @@
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="imagine_font.otf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="imagine_font.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Doge_Much_wow.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Doge_Swag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="next_level_swag_doge.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="pleb.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="top_pleb.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
