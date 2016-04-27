@@ -25,14 +25,21 @@ public:
 	float getXPos() const;
 	float getYPos() const;
 
+	float getXDir() const;
+	float getYDir() const;
+
+	int getWidth() const;
+	int getHeight() const;
+
 	void setXPos(const float &newPos);
 	void setYPos(const float &newPos);
+
+	void setXDir(const float &newXDir);
+	void setYDir(const float &newYDir);
 
 	void move();
 	void move(float xDif,float yDir);
 
-	int getWidth() const;
-	int getHeight() const;
 	
 	static Entity* CheckEntity(lua_State * L, int i);
 

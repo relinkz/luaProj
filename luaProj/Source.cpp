@@ -19,6 +19,7 @@ void registerEngineFunctions(lua_State * L);
 
 bool intersectX(Entity* Player, Entity* Enemy);
 bool intersectY(Entity* Player, Entity* Enemy);
+void adjustPlayerPos(float xDiff, float yDiff, Entity* Player, Entity* Wall);
 
 Entity* CheckEntity(lua_State *L, int i);
 
@@ -150,13 +151,20 @@ static int wallIntersectionTest(lua_State *L)
 	Entity* Wall = nullptr;
 	Wall = Entity::CheckEntity(L, 2);
 
-	sf::RectangleShape ap;
+	int state = lua_tonumber(L, 3);
+	bool result = false;
+	float xDiff = abs(Player->getXPos() - Wall->getXPos());
+	float yDiff = abs(Player->getYPos() - Wall->getYPos());
+	if (xDiff < 11 && yDiff < 11)
+	{
+		result = true;
 
-	sf::IntRect playerRect(Player->getXPos(), Player->getYPos(), 11, 11);
-	sf::IntRect wallRect(Wall->getXPos(), Wall->getYPos(), 11, 11);
+		if (state == 1)
+		{
+			adjustPlayerPos(xDiff, yDiff, Player, Wall);
+		}
 
-	bool result = playerRect.intersects(wallRect);
-
+	}
 	if (result)
 	{
 		lua_pushinteger(L, -1);
@@ -235,6 +243,32 @@ bool intersectY(Entity* Player, Entity* Enemy)
 		intersect = false;
 	}*/
 	return intersect;
+}
+
+void adjustPlayerPos(float xDiff, float yDiff, Entity* Player, Entity* Wall)
+{
+	if (yDiff > xDiff)
+	{
+		if (Player->getYPos() > Wall->getYPos())
+		{
+			Player->move(0.0f, yDiff * 0.1f);
+		}
+		else
+		{
+			Player->move(0.0f, -yDiff * 0.1f);
+		}
+	}
+	else
+	{
+		if (Player->getXPos() > Wall->getXPos())
+		{
+			Player->move(xDiff * 0.1f, 0.0f);
+		}
+		else
+		{
+			Player->move(-xDiff * 0.1f, 0.0f);
+		}
+	}
 }
 
 void printLuaVar(const string &variable, lua_State *L)

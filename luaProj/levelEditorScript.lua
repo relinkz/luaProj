@@ -1,4 +1,4 @@
-Player = Entity.New(98, 98, 0.0, 0.0)
+Player = Entity.New(98, 98, 0.0, 0.0,10,10)
 Walls = {}
 xPos = -1
 yPos = -1
@@ -74,7 +74,7 @@ function handleInput()
 	if input == 1 and inputDelay > 50 then
 		for y=1, #Walls
 		do
-			engi.wallIntersectionTest(Player, Walls[y])
+			engi.wallIntersectionTest(Player, Walls[y], 0)
 			if intersectionTest == -1 then
 				break
 			end
@@ -90,6 +90,18 @@ function handleInput()
 		saveToFile()
 		input = -1
 		inputDelay = 0
+	end
+	if input == 3 and inputDelay > 50 then
+		for y=1, #Walls
+		do
+			engi.wallIntersectionTest(Player, Walls[y], 0)
+			if intersectionTest == -1 then
+				table.remove(Walls,y);
+				input = -1
+				inputDelay = 0
+				break
+			end
+		end
 	end
 
 

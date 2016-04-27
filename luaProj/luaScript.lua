@@ -1,7 +1,7 @@
 print(package.path)
 require("EnemySpawner")
 
-Player = Entity.New(0, 0, 0.0, 0.0, 10, 10)
+Player = Entity.New(0, 0, 0.5, 0.5, 10, 10)
 Enemies = {}
 Walls = {}
 engi = Engine
@@ -66,10 +66,15 @@ end
 readFile()
 while(true)
 do
-	Player:Update()
+	for y=1, #Walls
+	do
+		engi.wallIntersectionTest(Player, Walls[y], 1) 
+	end
+
+	--Player:Update()
 	Player:UpdatePlayer()
 
-	if nrOfEnemies < 100 then
+	if nrOfEnemies < 1 then
 		spawnX = spawnXPos()
 		spawnY = spawnYPos()
 

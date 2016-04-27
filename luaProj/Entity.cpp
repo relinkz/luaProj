@@ -71,6 +71,15 @@ void Entity::setYPos(const float & newPos)
 	this->yPos = newPos;
 }
 
+void Entity::setXDir(const float & newXDir)
+{
+	this->xDir = newXDir;
+}
+void Entity::setYDir(const float & newYDir)
+{
+	this->yDir = newYDir;
+}
+
 void Entity::move()
 {
 	this->xPos += this->xDir;
@@ -82,6 +91,16 @@ void Entity::move(float xDir,float  yDir)
 	this->yPos += yDir;
 }
 
+
+float Entity::getXDir() const
+{
+	return this->yDir;
+}
+
+float Entity::getYDir() const
+{
+	return this->xDir;
+}
 
 int Entity::getWidth() const
 {
@@ -147,8 +166,10 @@ int Entity::UpdatePlayer(lua_State *L)
 {
 	Entity* aPtr = nullptr;
 	aPtr = CheckEntity(L, 1);
-	float xSpeed = 0.5f;
-	float ySpeed = 0.5f;
+
+	float xSpeed = 0.05f;
+	float ySpeed = 0.05f;
+
 	if (aPtr != nullptr)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
