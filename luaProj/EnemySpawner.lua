@@ -53,21 +53,21 @@ function findOutClosestSide (xPos, yPos, xMax, yMax)
 	if(sideToSpawn == 0) then
 
 		if(distanceX < xPos) then --left or right
-			-- left side
+			-- right side
 			finalYPos = yPos;
-			finalXPos = xMax
+			finalXPos = xMax;
 		else
 			--right
-			finalXPos = 0;
+			finalXPos = 0- 50;
 			finalYPos = yPos;
 		end
 		finalSpeedX = speedx (finalXPos);
 	else	--top or bot
 		if(distanceY < yPos) then
-			finalXPos = xPos
+			finalXPos = xPos;
 			finalYPos = yMax;
 		else
-			finalYPos = 0;
+			finalYPos = 0 - 50;
 			finalXPos = xPos;
 		end
 		finalSpeedY = speedy (finalYPos)
@@ -79,7 +79,7 @@ function spawnPos()
 	windowHeight = 480;
 	halfWindowHeight = (windowHeight / 2);
 
-	windowWidth = 640
+	windowWidth = 640;
 	halfWindowHeight = (windowWidth / 2);
 
 	spawnY = math.random (10, windowWidth);
