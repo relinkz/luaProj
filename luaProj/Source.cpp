@@ -10,6 +10,9 @@ sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!");
 //sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!", sf::Style::Fullscreen);
 sf::Event event;
 sf::Font gameFont;
+
+sf::Texture spriteSheet;
+
 sf::Clock gameClock;
 std::vector<sf::Texture*> textures;
 
@@ -53,6 +56,9 @@ int main()
 	registerEntityFunctions(L);
 	registerEngineFunctions(L);
 
+	spriteSheet.loadFromFile("many_wow_sheet.png");
+
+
 	if (!gameFont.loadFromFile("imagine_font.ttf"))
 	{
 		cout << "error i font load" << endl;
@@ -86,8 +92,15 @@ static int renderPlayer(lua_State *L)
 		float y = aPtr->getYPos();
 		int width = aPtr->getWidth();
 		int height = aPtr->getHeight();
+
+		width += 100;
+		height += 100;
+
 		sf::RectangleShape shape(sf::Vector2f(width, height));
-		shape.setFillColor(sf::Color::Green);
+
+		//shape.setFillColor(sf::Color::Green);
+		shape.setTexture(&spriteSheet);
+		shape.setTextureRect(sf::IntRect(sf::Vector2i(62, 6), sf::Vector2i(20, 40)));
 		shape.setPosition(x, y);
 		window.draw(shape);
 	}
@@ -104,6 +117,8 @@ static int renderEnemy(lua_State *L)
 		float y = aPtr->getYPos();
 		int width = aPtr->getWidth();
 		int height = aPtr->getHeight();
+		
+
 		sf::RectangleShape shape(sf::Vector2f(width, height));
 		shape.setFillColor(sf::Color::Red);
 		shape.setPosition(x, y);

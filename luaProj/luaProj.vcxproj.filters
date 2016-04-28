@@ -85,5 +85,8 @@
     <Image Include="top_pleb.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="many_wow_sheet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
