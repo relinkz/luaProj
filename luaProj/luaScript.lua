@@ -162,8 +162,7 @@ do
 			table.insert(Particles ,Entity.New(xPos, yPos - 10, 0.0, -0.5, 100, 100))
 		end
 
-		gameRender()
-
+			gameRender()
 	end
 
 	engi.resetGameTime();
