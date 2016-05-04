@@ -21,9 +21,12 @@ sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SFML works!
 sf::Event event;
 sf::Font gameFont;
 sf::Clock gameClock;
+
 std::vector<sf::Texture*> textures;
 float gameTime = 0;
 
+sf::Texture playerTextureSheet;
+sf::Sprite player;
 
 lua_State *L;
 
@@ -105,14 +108,24 @@ static int renderPlayer(lua_State *L)
 	{
 		float x = aPtr->getXPos() + globalXOffSet;
 		float y = aPtr->getYPos() + globalYOffSet;
+		
 		int width = aPtr->getWidth();
 		int height = aPtr->getHeight();
-		sf::RectangleShape shape(sf::Vector2f(width, height));
-		shape.setFillColor(sf::Color::Green);
+
+		//sf::RectangleShape shape(sf::Vector2f(width, height));
+		
+		playerTextureSheet.loadFromFile("Doge_Swag.png");
+		player.setTextureRect(shape);
+
+		//shape.setFillColor(sf::Color::Green);
 		shape.setPosition(x, y);
+		
+		//creating the playersheet
+
+
+		
 		window.draw(shape);
 	}
-
 
 
 	return 0; // because fack you, thats why!
