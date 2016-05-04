@@ -21,6 +21,9 @@ sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SFML works!
 sf::Event event;
 sf::Font gameFont;
 sf::Clock gameClock;
+sf::Clock animationClock;
+
+std::vector<sf::IntRect> spriteSheetLevel;
 
 std::vector<sf::Texture*> textures;
 float gameTime = 0;
@@ -101,30 +104,29 @@ int main()
 
 static int renderPlayer(lua_State *L)
 {
-
 	Entity* aPtr = Entity::CheckEntity(L, 1);
 
 	if (aPtr != nullptr)
 	{
 		float x = aPtr->getXPos() + globalXOffSet;
 		float y = aPtr->getYPos() + globalYOffSet;
-		
+
 		int width = aPtr->getWidth();
 		int height = aPtr->getHeight();
 
 		//sf::RectangleShape shape(sf::Vector2f(width, height));
-		
-		playerTextureSheet.loadFromFile("Doge_Swag.png");
-		player.setTextureRect(shape);
-
+		//player.setTextureRect(&playerTextureSheet, sf::IntRect(0, 0, 40, 40));
+		player.setTexture(playerTextureSheet);
+		player.setTextureRect(spriteSheetLevel.at(1));
 		//shape.setFillColor(sf::Color::Green);
-		shape.setPosition(x, y);
+		player.setPosition(x, y);
+		//shape.setPosition(x, y);
 		
 		//creating the playersheet
 
 
 		
-		window.draw(shape);
+		window.draw(player);
 	}
 
 
@@ -693,6 +695,22 @@ void loadTextures()
 	{
 		cout << "error i texture load" << endl;
 	}
+
+	playerTextureSheet.loadFromFile("Doge_Swag.png");
+
+	//rectange positions indicating the sprite pos
+
+	sf::IntRect rec1(0, 0, 40, 30);
+	sf::IntRect rec2(40, 0, 40, 30);
+	sf::IntRect rec3(40 * 2, 0, 40, 30);
+	sf::IntRect rec4(40 * 3, 0, 40, 30);
+	sf::IntRect rec5(40 * 4, 0, 40, 30);
+
+	spriteSheetLevel.push_back(rec1);
+	spriteSheetLevel.push_back(rec2);
+	spriteSheetLevel.push_back(rec3);
+	spriteSheetLevel.push_back(rec4);
+	spriteSheetLevel.push_back(rec5);
 }
 
 int sendTimeToLua(lua_State *L)
