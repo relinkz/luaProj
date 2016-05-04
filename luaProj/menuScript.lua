@@ -1,10 +1,7 @@
 print(package.path)
-require("levelEditorScript")
-require("luaScript")
 
 Player = Entity.New(150, 50, 0.5, 0.5, 10, 10)
 Buttons = {}
-Walls = {}
 engi = Engine
 SWAG_SCORE = 0
 buttonPressed = -1
@@ -29,7 +26,7 @@ function menuRender()
 end
 
 
-while(buttonPressed ~= 3)
+while(buttonPressed == -1)
 do
 	engi.getGameTime();
 	Player:UpdatePlayer(gameTime)
@@ -38,23 +35,17 @@ do
 	if input == 1 then
 		for y=1, #Buttons
 		do
-			engi.buttonIntersectionTest(Player, Buttons[y])
+			engi.buttonIntersectionTest(Player, Buttons[y], y)
 			if intersectionTest == -1 then
-				buttonPressed = y
+				buttonPressed = 1
 			end
 
 		end
 	end
 
 	menuRender()
-
 	if buttonPressed == 1 then
-		Main(Player)
+		return
 	end
-	
-	if buttonPressed == 2 then
-		LevelEditor()
-	end
-	engi.resetGameTime();
-
 end
+

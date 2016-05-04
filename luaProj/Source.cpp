@@ -43,7 +43,7 @@ static int windowClear(lua_State *L);
 void playGame();
 
 sf::Text text;
-
+int buttonPressed = 0;
 
 void renderBox(float x, float y);
 void loadTextures();
@@ -65,7 +65,7 @@ int main()
 
 	playGame();
 
-	while (window.isOpen())
+	/*while (window.isOpen())
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -73,7 +73,7 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
-	}
+	}*/
 
 	return 0;
 }
@@ -276,13 +276,13 @@ static int intersectionTest(lua_State *L)
 	sf::IntRect enenmyRect(Enemy->getXPos(), Enemy->getYPos(), Enemy->getWidth(), Enemy->getHeight());
 
 	bool result = playerRect.intersects(enenmyRect);
-/*
+
 	if (result)
 	{
-		cout << "You died" << endl;
-		system("pause");
+		lua_pushinteger(L, -1);
+		lua_setglobal(L, "enemyIntersectionResult");
 	}
-	*/
+	
 
 	return 0;
 }
@@ -297,6 +297,7 @@ static int buttonIntersectionTest(lua_State *L)
 	Entity* Button = nullptr;
 	Button = Entity::CheckEntity(L, 2);
 
+
 	sf::IntRect playerRect(Player->getXPos(), Player->getYPos(), Player->getWidth(), Player->getHeight());
 	sf::IntRect enenmyRect(Button->getXPos(), Button->getYPos(), Button->getWidth(), Button->getHeight());
 
@@ -307,6 +308,7 @@ static int buttonIntersectionTest(lua_State *L)
 	{
 		lua_pushinteger(L, -1);
 		lua_setglobal(L, "intersectionTest");
+		buttonPressed = lua_tonumber(L, 3);
 	}
 	else
 	{
@@ -509,27 +511,37 @@ void registerEngineFunctions(lua_State * L)
 
 void playGame()
 {
-	int error = luaL_loadfile(L, "menuScript.lua") || lua_pcall(L, 0, 1, 0);
-
-	if (error)
+	while (buttonPressed != 3)
 	{
-		cerr << lua_tostring(L, -1) << endl;
+		int error = luaL_loadfile(L, "menuScript.lua") || lua_pcall(L, 0, 1, 0);
+
+		if (error)
+		{
+			cerr << lua_tostring(L, -1) << endl;
+		}
+
+		if (buttonPressed == 1)
+		{
+			int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
+
+			if (error)
+			{
+				cerr << lua_tostring(L, -1) << endl;
+			}
+		}
+
+		if (buttonPressed == 2)
+		{
+			int error = luaL_loadfile(L, "levelEditorScript.lua") || lua_pcall(L, 0, 1, 0);
+
+			if (error)
+			{
+				cerr << lua_tostring(L, -1) << endl;
+			}
+		}
+
 	}
-	
-	/*int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
 
-	if (error)
-	{
-		cerr << lua_tostring(L,-1) << endl;
-	}*/
-	//lua_getglobal(L,"Main");
-	//error = lua_pcall(L, 0, 1, 0);
-	/*int error = luaL_loadfile(L, "levelEditorScript.lua") || lua_pcall(L, 0, 1, 0);
-
-	if (error)
-	{
-		cerr << lua_tostring(L, -1) << endl;
-	}*/
 }
 
 void loadTextures()
