@@ -1,11 +1,11 @@
---Player = Entity.New(98, 98, 0.0, 0.0,10,10)
---Walls = {}
+Player = Entity.New(98, 98, 0.0, 0.0,10,10)
+Walls = {}
 xPos = -1
 yPos = -1
 input = -1
 inputDelay = 0
 intersectionTest = 1
---engi = Engine
+engi = Engine
 done = -1
 
 function levleEditorRender()
@@ -108,10 +108,9 @@ function handleInput()
 
 
 end
-function LevelEditor()
-do
-	readFile()
-	while(done == -1)
+
+readFile()
+while(done == -1)
 	do
 		engi.getGameTime();
 		Player:UpdatePlayer(gameTime)
@@ -122,7 +121,6 @@ do
 
 		engi.resetGameTime();
 	end
-	count = #Walls
-	for i=0, count do Walls[i]=nil end
-end
-end
+count = #Walls
+for i=0, count do Walls[i]=nil end
+

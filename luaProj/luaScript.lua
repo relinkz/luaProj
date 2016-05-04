@@ -1,11 +1,11 @@
 print(package.path)
 require("EnemySpawner")
 
---Player = Entity.New(150, 50, 0.5, 0.5, 10, 10)
+Player = Entity.New(150, 50, 0.5, 0.5, 10, 10)
 Enemies = {}
 Walls = {}
 Particles = {}
---engi = Engine
+engi = Engine
 nrOfEnemies = 3
 SWAG_SCORE = 0
 bonusScoreCounter = 0
@@ -14,6 +14,7 @@ xPos = 0
 yPos = 0
 counter = 0
 nrOfEnemies = 0
+enemyIntersectionResult = 1
 --gameTime = 0;
 
 function gameRender()
@@ -115,10 +116,9 @@ function spawnWalls()
 	end
 	io.close(file)
 end
-function Main()
-do
-	spawnWalls()
-	while(true)
+
+spawnWalls()
+while(true)
 	do
 		enemiesClose = -1
 		for y=1, #Walls
@@ -144,7 +144,12 @@ do
 			engi.getGameTime(gameTime);
 			Enemies[y]:Update (gameTime)
 			engi.intersectionTest (Player, Enemies[y], bonusScoreCounter, enemiesClose)
+
+			if enemyIntersectionResult == -1 then
+				return
+			end
 		end
+
 		destroyOutsideBullets()
 
 
@@ -167,5 +172,4 @@ do
 
 	engi.resetGameTime();
 
-end
-end
+

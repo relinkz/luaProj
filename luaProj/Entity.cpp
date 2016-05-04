@@ -183,8 +183,11 @@ int Entity::UpdatePlayer(lua_State *L)
 	//float xSpeed = dt *10000.0f;
 	//float ySpeed = dt *10000.0f;
 
-	float xSpeed = 10.0f *dt;
-	float ySpeed = 10.0f *dt;
+	//float xSpeed = 10.0f *dt;
+	//float ySpeed = 10.0f *dt;
+
+	float xSpeed = 1.0f;
+	float ySpeed = 1.0f;
 
 	if (aPtr != nullptr)
 	{
