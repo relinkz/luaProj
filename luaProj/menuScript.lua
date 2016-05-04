@@ -57,11 +57,10 @@ do
 
 	menuRender()
 	if buttonPressed == 1 then
-		--for y=1, #Buttons
-		--do
-			--table.remove(Buttons,y)
-			--y = y - 1
-		--end
+		while #Buttons > 0
+		do
+			table.remove(Buttons,1)
+		end
 		return
 	end
 end

@@ -60,7 +60,23 @@ end
 function spawnBullet(var1, var2, var3, var4, width, height)
 	table.insert(Enemies ,Entity.New(var1, var2, var3, var4, width, height))
 end
+function release()
+	while #Enemies > 0
+	do
+		table.remove(Enemies,1)
+	end
 
+	while #Walls > 0
+	do
+		table.remove(Walls,1)
+	end
+
+	while #Particles > 0
+	do
+		table.remove(Particles,1)
+	end
+	collectgarbage() 
+end
 function destroyOutsideBullets()
 
 	for i=1, #Enemies
@@ -162,6 +178,7 @@ while(true)
 	if enemyIntersectionResult == -1 then
 			
 			saveSwagToFile(SWAG_SCORE)
+			release()
 			return
 			end
 		end

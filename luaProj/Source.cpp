@@ -40,6 +40,8 @@ static int resetTime(lua_State *L);
 static int windowDisplay(lua_State *L);
 static int windowClear(lua_State *L);
 
+void releas();
+
 void playGame();
 
 sf::Text text;
@@ -64,7 +66,7 @@ int main()
 
 
 	playGame();
-
+	releas();
 	/*while (window.isOpen())
 	{
 		sf::Event event;
@@ -547,7 +549,10 @@ void playGame()
 	}
 
 }
-
+void releas()
+{
+	lua_close(L);
+}
 void loadTextures()
 {
 	textures.push_back(new sf::Texture());
