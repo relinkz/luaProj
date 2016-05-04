@@ -15,7 +15,8 @@ yPos = 0
 counter = 0
 nrOfEnemies = 0
 enemyIntersectionResult = 1
---gameTime = 0;
+gameTime = 0;
+timer = 0
 
 function saveSwagToFile(score)
 	local file = io.open("highScore.txt", "r")
@@ -29,6 +30,8 @@ function saveSwagToFile(score)
 	io.input(file)
 	if SWAG_SCORE > highestSwag then
 		file:write(SWAG_SCORE, "\n")
+	else
+		file:write(highestSwag, "\n")
 	end
 	io.close(file)
 end
@@ -147,16 +150,12 @@ while(true)
 
 		for y=1, #Particles
 		do
-			--engi.getGameTime();
-			engi.getGameTime();
 			Particles[y]:Update(gameTime)
 		end
 
 		spawnEnemy()
 		for y=1, #Enemies
 		do
-			--engi.getGameTime();
-			engi.getGameTime(gameTime);
 			Enemies[y]:Update (gameTime)
 			engi.intersectionTest (Player, Enemies[y], bonusScoreCounter, enemiesClose)
 
@@ -181,10 +180,14 @@ while(true)
 			bonusScoreCounter = 0
 			SWAG_SCORE = SWAG_SCORE + 50
 			Player:getPos();
-			table.insert(Particles ,Entity.New(xPos, yPos - 10, 0.0, -0.5, 100, 100))
+			table.insert(Particles ,Entity.New(xPos, yPos - 10, 0.0, -3.0, 100, 100))
 		end
-
-			gameRender()
+		timer = timer + gameTime
+		if timer >= 1 then
+		 SWAG_SCORE = SWAG_SCORE + 1
+		 timer = 0
+		end
+		gameRender()
 	end
 
 
