@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="filename.txt" />
+    <Text Include="highScore.txt" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="imagine_font.otf" />

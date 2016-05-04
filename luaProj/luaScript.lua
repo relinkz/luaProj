@@ -17,7 +17,17 @@ nrOfEnemies = 0
 enemyIntersectionResult = 1
 --gameTime = 0;
 
-function gameRender()
+function saveSwagToFile(score)
+	local file = io.open("highScore.txt", "w+")
+
+	io.input(file)
+
+	file:write(SWAG_SCORE)
+	io.close(file)
+	
+end
+
+	function gameRender()
 	engi.windowClear()
 	engi.renderPlayer(Player)
 	engi.renderEnemy(Enemy)
@@ -145,8 +155,9 @@ while(true)
 			Enemies[y]:Update (gameTime)
 			engi.intersectionTest (Player, Enemies[y], bonusScoreCounter, enemiesClose)
 
-			if enemyIntersectionResult == -1 then
-				return
+	if enemyIntersectionResult == -1 then
+			--saveSwagToFile(SWAG_SCORE)
+			return
 			end
 		end
 

@@ -63,6 +63,9 @@
     <Text Include="filename.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="highScore.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Font Include="imagine_font.otf">
