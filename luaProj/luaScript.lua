@@ -2,7 +2,7 @@ print(package.path)
 require("EnemySpawner")
 
 Player = Entity.New(150, 50, 0.5, 0.5, 10, 10)
-Enemies = {}
+Enemies = {Entity.New(300,300,0.0,0.0,20,100)}
 Walls = {}
 Particles = {}
 engi = Engine
@@ -12,7 +12,7 @@ bonusScoreCounter = 0
 enemiesClose = 0
 xPos = 0
 yPos = 0
-counter = 0
+counter = 0.0
 nrOfEnemies = 0
 enemyIntersectionResult = 1
 gameTime = 0;
@@ -174,7 +174,7 @@ while(true)
 			Particles[y]:Update(gameTime)
 		end
 
-		spawnEnemy()
+		--spawnEnemy()
 		for y=1, #Enemies
 		do
 			Enemies[y]:Update (gameTime)
@@ -192,14 +192,14 @@ while(true)
 
 
 		if #Particles >= 1 then
-			counter = counter + 1
+			counter = counter + gameTime
 		end
-		if counter > 200 then
+		if counter > 0.5 then
 			Particles[1]:remove()
 			table.remove(Particles, 1)
 			counter = 0
 		end
-		if bonusScoreCounter >= 200 then
+		if bonusScoreCounter >= 2 then
 			bonusScoreCounter = 0
 			SWAG_SCORE = SWAG_SCORE + 50
 			Player:getPos();

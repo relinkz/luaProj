@@ -12,6 +12,7 @@ sf::Event event;
 sf::Font gameFont;
 sf::Clock gameClock;
 std::vector<sf::Texture*> textures;
+float gameTime = 0;
 
 lua_State *L;
 
@@ -26,7 +27,7 @@ bool intersectX(Entity* Player, Entity* Enemy);
 bool intersectY(Entity* Player, Entity* Enemy);
 void adjustPlayerPos(float xDiff, float yDiff, Entity* Player, Entity* Wall);
 
-void realeaseTextures();
+void release();
 
 Entity* CheckEntity(lua_State *L, int i);
 
@@ -41,8 +42,6 @@ static int resetTime(lua_State *L);
 
 static int windowDisplay(lua_State *L);
 static int windowClear(lua_State *L);
-
-void releas();
 
 void playGame();
 
@@ -69,17 +68,8 @@ int main()
 
 	playGame();
 
-	realeaseTextures();
+	release();
 
-	/*while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-	}*/
 
 	return 0;
 }
@@ -265,19 +255,36 @@ static int intersectionTest(lua_State *L)
 	Entity* Enemy = nullptr;
 	Enemy = Entity::CheckEntity(L, 2);
 
-	int counter = lua_tonumber(L, 3);
+	float counter = lua_tonumber(L, 3);
 	int enemiesClose = lua_tonumber(L, 4);
 
 	float xDiff = abs(Player->getXPos() - Enemy->getXPos());
 	float yDiff = abs(Player->getYPos() - Enemy->getYPos());
+	float maxXDiffAllowed = 10;
+	float maxYDiffAllowed = 10;
 
-	if (xDiff < 14 && yDiff < 14)
+	if (Player->getXPos() < Enemy->getXPos())
 	{
-		counter++;
+		maxXDiffAllowed += Player->getWidth();
+	}
+	else
+	{
+		maxXDiffAllowed += Enemy->getWidth();
+	}
+	if (Player->getYPos() < Enemy->getYPos())
+	{
+		maxYDiffAllowed += Player->getHeight();
+	}
+	else
+	{
+		maxYDiffAllowed += Enemy->getHeight();
+	}
+	if (xDiff < maxXDiffAllowed && yDiff < maxYDiffAllowed)
+	{
+		counter += gameTime;
 		enemiesClose++;
 	}
-
-	lua_pushinteger(L, counter);
+	lua_pushnumber(L, counter);
 	lua_setglobal(L, "bonusScoreCounter");
 
 	lua_pushinteger(L, enemiesClose);
@@ -587,6 +594,7 @@ int sendTimeToLua(lua_State *L)
 	sf::Time eTime = gameClock.getElapsedTime();
 	float s = eTime.asSeconds();
 	s = gameClock.restart().asSeconds();
+	gameTime = s;
 	lua_pushnumber(L,s);
 	lua_setglobal(L, "gameTime");
 
@@ -601,7 +609,7 @@ int resetTime(lua_State *L)
 	return 0;
 }
 
-void realeaseTextures()
+void release()
 {
 	for (int i = 0; i < textures.size(); i++)
 	{

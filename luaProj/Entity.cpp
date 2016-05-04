@@ -182,33 +182,41 @@ int Entity::UpdatePlayer(lua_State *L)
 
 	float dt = lua_tonumber(L, 2);
 
-	//float xSpeed = dt *10000.0f;
-	//float ySpeed = dt *10000.0f;
-
-	float xSpeed = BASE_ENTITY_SPEED *dt;
-	float ySpeed = BASE_ENTITY_SPEED *dt;
-
-	//float xSpeed = 1.0f;
-	//float ySpeed = 1.0f;
 
 	if (aPtr != nullptr)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		float xSpeed = 0;
+		float ySpeed = 0;
+		float speedMultplier = 1;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+		{
+			speedMultplier = 0.5f;
+		}
+		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+		{
+			speedMultplier = 2.0f;
+		}
+
+
+		xSpeed += BASE_ENTITY_SPEED * dt * speedMultplier;
+		ySpeed += BASE_ENTITY_SPEED * dt * speedMultplier;
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && aPtr->getXPos() > 0)
 		{
 			aPtr->move(-xSpeed, 0.0f);
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && aPtr ->getYPos () > 0)
 		{
 			aPtr->move(0.0f, -ySpeed);
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && aPtr->getXPos() < (640 - aPtr->getWidth()))
 		{
 			aPtr->move(xSpeed, 0.0f);
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && aPtr->getYPos() < (480 - aPtr->getHeight()))
 		{
 			aPtr->move(0.0f, ySpeed);
 		}
