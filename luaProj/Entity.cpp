@@ -88,8 +88,8 @@ void Entity::move()
 
 void Entity::move(const float & dt)
 {
-	this->xPos += this->xDir * dt;
-	this->yPos += this->yDir * dt;
+	this->xPos += (this->xDir * BASE_ENTITY_SPEED) * dt;
+	this->yPos += (this->yDir * BASE_ENTITY_SPEED) * dt;
 }
 
 void Entity::move(float xDir,float  yDir)
@@ -142,7 +142,7 @@ int Entity::Update(lua_State * L)
 
 	if (aPtr != nullptr)
 	{
-		aPtr->move();
+		aPtr->move(dt);
 	}
 
 	return 0;
@@ -183,11 +183,11 @@ int Entity::UpdatePlayer(lua_State *L)
 	//float xSpeed = dt *10000.0f;
 	//float ySpeed = dt *10000.0f;
 
-	//float xSpeed = 10.0f *dt;
-	//float ySpeed = 10.0f *dt;
+	float xSpeed = BASE_ENTITY_SPEED *dt;
+	float ySpeed = BASE_ENTITY_SPEED *dt;
 
-	float xSpeed = 1.0f;
-	float ySpeed = 1.0f;
+	//float xSpeed = 1.0f;
+	//float ySpeed = 1.0f;
 
 	if (aPtr != nullptr)
 	{

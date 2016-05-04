@@ -4,6 +4,8 @@
 #include "SFML\Graphics.hpp"
 #include <iostream>
 
+static float BASE_ENTITY_SPEED = 100.0f;
+
 void registerEntityFunctions(lua_State * L);
 
 class Entity
