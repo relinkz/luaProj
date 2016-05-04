@@ -51,6 +51,7 @@ static int printScore(lua_State *L);
 
 static int sendTimeToLua(lua_State *L);
 static int resetTime(lua_State *L);
+static int startMusic(lua_State *L);
 
 static int windowDisplay(lua_State *L);
 static int windowClear(lua_State *L);
@@ -59,6 +60,9 @@ void playGame();
 
 sf::Text text;
 
+sf::SoundBuffer soundBuffer;
+sf::Sound sound;
+
 int buttonPressed = 0;
 
 void renderBox(float x, float y);
@@ -66,6 +70,7 @@ void loadTextures();
 
 int main()
 {
+
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	initializeLua();
 	registerEntityFunctions(L);
@@ -79,7 +84,10 @@ int main()
 	text.setFont(gameFont);
 	loadTextures();
 
-
+	if (!soundBuffer.loadFromFile("canary.wav"))
+		return -1;
+	sound.setBuffer(soundBuffer);
+	sound.play();
 	playGame();
 
 	release();
@@ -589,6 +597,7 @@ void registerEngineFunctions(lua_State * L)
 		{ "buttonIntersectionTest", buttonIntersectionTest },
 		{ "getGameTime",			sendTimeToLua },
 		{"resetGameTime",			resetTime},
+		{ "startMusic",				startMusic },
 		{ NULL, NULL }
 	};
 
@@ -617,6 +626,12 @@ void playGame()
 
 		if (buttonPressed == 1)
 		{
+			if (!soundBuffer.loadFromFile("Nyan_Cat.wav"))
+			{
+
+			}
+			sound.setBuffer(soundBuffer);
+			sound.play();
 			int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
 
 			if (error)
@@ -695,4 +710,16 @@ void release()
 		textures.at(i) = nullptr;
 	}
 	lua_close(L);
+}
+
+static int startMusic(lua_State *L)
+{
+	if (!soundBuffer.loadFromFile("Nyan_Cat.wav"))
+	{
+
+	}
+	sound.setBuffer(soundBuffer);
+	sound.play();
+
+	return 0;
 }

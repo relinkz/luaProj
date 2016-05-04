@@ -19,6 +19,7 @@ maxNrOfEnemies = 50
 enemySpeedMulti = 1.0
 enemyIntersectionResult = 1
 gameTime = 0;
+musicTimer = 216.0
 timer = 0
 
 function saveSwagToFile(score)
@@ -175,6 +176,11 @@ while(true)
 		end
 
 		engi.getGameTime();
+		musicTimer = musicTimer - gameTime
+		if musicTimer < 0 then
+			musicTimer = 216
+			engi.startMusic()		
+		end
 		Player:UpdatePlayer(gameTime)
 
 		for y=1, #Particles
