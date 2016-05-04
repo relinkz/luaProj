@@ -11,6 +11,7 @@ void registerEntityFunctions(lua_State * L)
 		{"Update",			Entity::Update},
 		{"UpdatePlayer",	Entity::UpdatePlayer },
 		{"getPos",			Entity::getPos },
+		{"remove",			Entity::remove },
 		{ NULL, NULL}
 	};
 
@@ -162,6 +163,7 @@ int Entity::New(lua_State * L)
 	Entity** entity = reinterpret_cast<Entity**>(lua_newuserdata(L, sizeof(Entity*)));
 
 	*entity = new Entity(x, y, xDir, yDir, width, height);
+	//delete entity;
 	//std::cout
 		//<< "xValue" << x << std::endl
 		//<< "yValue" << y << std::endl;
@@ -233,4 +235,11 @@ int Entity::getPos(lua_State *L)
 
 
 	return 1;
+}
+
+int Entity::remove(lua_State * L)
+{
+	Entity* ptr = CheckEntity(L, 1);
+	delete ptr;
+	return 0;
 }

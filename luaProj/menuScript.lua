@@ -54,13 +54,15 @@ do
 
 		end
 	end
-
+	
 	menuRender()
 	if buttonPressed == 1 then
-		while #Buttons > 0
+		for y=1, #Buttons 
 		do
-			table.remove(Buttons,1)
+		Buttons[y]:remove()
 		end
+		Player:remove()
+		collectgarbage() 
 		return
 	end
 end

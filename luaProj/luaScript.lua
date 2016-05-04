@@ -61,20 +61,21 @@ function spawnBullet(var1, var2, var3, var4, width, height)
 	table.insert(Enemies ,Entity.New(var1, var2, var3, var4, width, height))
 end
 function release()
-	while #Enemies > 0
+	for y=1, #Enemies
 	do
-		table.remove(Enemies,1)
+		Enemies[y]:remove()
 	end
 
-	while #Walls > 0
+	for y=1, #Walls 
 	do
-		table.remove(Walls,1)
+		Walls[y]:remove()
 	end
 
-	while #Particles > 0
+	for y=1, #Particles
 	do
-		table.remove(Particles,1)
+		Particles[y]:remove()
 	end
+	Player:remove()
 	collectgarbage() 
 end
 function destroyOutsideBullets()
@@ -85,6 +86,7 @@ function destroyOutsideBullets()
 		
 		if xPos > 700 then
 			--destroy that shit
+			Enemies[i]:remove()
 			test = table.remove(Enemies,i)
 			nrOfEnemies = nrOfEnemies - 1
 			break
@@ -92,17 +94,20 @@ function destroyOutsideBullets()
 
 		if yPos > 500 then
 			--destroy that shit
+			Enemies[i]:remove()
 			table.remove(Enemies,i)
 			nrOfEnemies = nrOfEnemies - 1
 			break
 		end
 		if xPos < -50 then
+			Enemies[i]:remove()
 			table.remove(Enemies,i)
 			nrOfEnemies = nrOfEnemies - 1
 			break
 		end
 
 		if (yPos < -50) then
+			Enemies[i]:remove()
 			table.remove(Enemies,i)
 			nrOfEnemies = nrOfEnemies - 1
 			break
@@ -190,6 +195,7 @@ while(true)
 			counter = counter + 1
 		end
 		if counter > 200 then
+			Particles[1]:remove()
 			table.remove(Particles, 1)
 			counter = 0
 		end

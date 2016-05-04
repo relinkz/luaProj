@@ -26,6 +26,8 @@ bool intersectX(Entity* Player, Entity* Enemy);
 bool intersectY(Entity* Player, Entity* Enemy);
 void adjustPlayerPos(float xDiff, float yDiff, Entity* Player, Entity* Wall);
 
+void realeaseTextures();
+
 Entity* CheckEntity(lua_State *L, int i);
 
 static int renderPlayer(lua_State* L);
@@ -66,7 +68,9 @@ int main()
 
 
 	playGame();
-	releas();
+
+	realeaseTextures();
+
 	/*while (window.isOpen())
 	{
 		sf::Event event;
@@ -549,10 +553,6 @@ void playGame()
 	}
 
 }
-void releas()
-{
-	lua_close(L);
-}
 void loadTextures()
 {
 	textures.push_back(new sf::Texture());
@@ -599,4 +599,14 @@ int resetTime(lua_State *L)
 	
 
 	return 0;
+}
+
+void realeaseTextures()
+{
+	for (int i = 0; i < textures.size(); i++)
+	{
+		delete textures.at(i);
+		textures.at(i) = nullptr;
+	}
+	lua_close(L);
 }

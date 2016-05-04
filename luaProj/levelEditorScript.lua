@@ -119,8 +119,13 @@ while(done == -1)
 		handleInput()
 		inputDelay = inputDelay + 1
 		levleEditorRender()
-
+		if done == 1 then
+			for y=1, #Walls
+			do
+				Walls[y]:remove()
+			end
+			Player:remove()
+		end
 	end
-count = #Walls
-for i=0, count do Walls[i]=nil end
+
 
