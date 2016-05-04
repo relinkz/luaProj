@@ -19,6 +19,11 @@ private:
 
 	int width;
 	int height;
+
+	//std::vector<sf::IntRect> spriteSheetLevel;
+	sf::Texture* textureSheet;
+	sf::Sprite* sprite;
+
 public:
 	Entity();
 	Entity(float x, float y, float xDir, float yDir,int width, int height);
@@ -32,6 +37,9 @@ public:
 
 	int getWidth() const;
 	int getHeight() const;
+
+	void setTextureSheet(const std::string &sourceName);
+	void setSprite();
 
 	void setXPos(const float &newPos);
 	void setYPos(const float &newPos);

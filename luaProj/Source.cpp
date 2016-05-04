@@ -23,13 +23,10 @@ sf::Font gameFont;
 sf::Clock gameClock;
 sf::Clock animationClock;
 
-std::vector<sf::IntRect> spriteSheetLevel;
+
 
 std::vector<sf::Texture*> textures;
 float gameTime = 0;
-
-sf::Texture playerTextureSheet;
-sf::Sprite player;
 
 lua_State *L;
 
@@ -94,6 +91,7 @@ int main()
 		return -1;
 	sound.setBuffer(soundBuffer);
 	sound.play();
+
 	playGame();
 
 	release();
@@ -114,19 +112,11 @@ static int renderPlayer(lua_State *L)
 		int width = aPtr->getWidth();
 		int height = aPtr->getHeight();
 
-		//sf::RectangleShape shape(sf::Vector2f(width, height));
-		//player.setTextureRect(&playerTextureSheet, sf::IntRect(0, 0, 40, 40));
-		player.setTexture(playerTextureSheet);
-		player.setTextureRect(spriteSheetLevel.at(1));
-		//shape.setFillColor(sf::Color::Green);
-		player.setPosition(x, y);
-		//shape.setPosition(x, y);
+		sf::RectangleShape shape(sf::Vector2f(width, height));
+		shape.setFillColor(sf::Color::Green);
+		shape.setPosition(x, y);
 		
-		//creating the playersheet
-
-
-		
-		window.draw(player);
+		window.draw(shape);
 	}
 
 

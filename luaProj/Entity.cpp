@@ -34,6 +34,9 @@ Entity::Entity()
 
 	this->width = 10;
 	this->height = 10;
+
+	textureSheet = nullptr;
+	sprite = nullptr;
 }
 
 Entity::Entity(float x, float y, float xDir, float yDir, int width, int height)
@@ -118,6 +121,12 @@ int Entity::getHeight() const
 	return this->height;
 }
 
+void Entity::setTextureSheet(const std::string & sourceName)
+{
+	this->textureSheet = new sf::Texture;
+	this->textureSheet->loadFromFile(sourceName);
+}
+
 Entity* Entity::CheckEntity(lua_State * L, int i)
 {
 	Entity* entityPtr = nullptr;
@@ -179,6 +188,11 @@ int Entity::UpdatePlayer(lua_State *L)
 {
 	Entity* aPtr = nullptr;
 	aPtr = CheckEntity(L, 1);
+
+	if (aPtr->sprite == nullptr)
+	{
+		//the sprite is not set
+	}
 
 	float dt = lua_tonumber(L, 2);
 
