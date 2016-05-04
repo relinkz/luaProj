@@ -204,7 +204,12 @@ static int printScore(lua_State *L)
 {
 	string score = lua_tostring(L, 1);
 	int SWAG_SCORE = lua_tonumber(L, 1);
-	text.setString("score: " + score);
+
+	string toSay = "";
+	toSay = lua_tostring(L, 2);
+
+
+	text.setString(toSay + score);
 
 	text.setCharacterSize(24);
 
@@ -282,7 +287,6 @@ static int intersectionTest(lua_State *L)
 		lua_pushinteger(L, -1);
 		lua_setglobal(L, "enemyIntersectionResult");
 	}
-	
 
 	return 0;
 }

@@ -18,13 +18,19 @@ enemyIntersectionResult = 1
 --gameTime = 0;
 
 function saveSwagToFile(score)
-	local file = io.open("highScore.txt", "w+")
-
+	local file = io.open("highScore.txt", "r")
 	io.input(file)
+	local highestSwag = 1
+	highestSwag = tonumber(io.read())
 
-	file:write(SWAG_SCORE)
 	io.close(file)
-	
+
+	file = io.open("highScore.txt", "w+")
+	io.input(file)
+	if SWAG_SCORE > highestSwag then
+		file:write(SWAG_SCORE, "\n")
+	end
+	io.close(file)
 end
 
 	function gameRender()
@@ -40,7 +46,7 @@ end
 	do
 		engi.renderWall(Walls[y])
 	end
-	engi.printScore(SWAG_SCORE)
+	engi.printScore(SWAG_SCORE, "SWAGSCORE:")
 	for y=1, #Particles
 	do
 		engi.renderParticle(Particles[y], enemiesClose)
@@ -155,7 +161,8 @@ while(true)
 			engi.intersectionTest (Player, Enemies[y], bonusScoreCounter, enemiesClose)
 
 	if enemyIntersectionResult == -1 then
-			--saveSwagToFile(SWAG_SCORE)
+			
+			saveSwagToFile(SWAG_SCORE)
 			return
 			end
 		end

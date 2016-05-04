@@ -6,12 +6,22 @@ engi = Engine
 SWAG_SCORE = 0
 buttonPressed = -1
 intersectiontest = -1
+bestSwag = "0"
 input = -1
 gameTime = 0;
 
-table.insert(Buttons, Entity.New(150, 0,  0.0, 0.0, 200, 140))
-table.insert(Buttons, Entity.New(150, 150, 0.0, 0.0, 200, 140))
-table.insert(Buttons, Entity.New(150, 300, 0.0, 0.0, 200, 140))
+table.insert(Buttons, Entity.New(300, 0,  0.0, 0.0, 200, 140))
+table.insert(Buttons, Entity.New(300, 150, 0.0, 0.0, 200, 140))
+table.insert(Buttons, Entity.New(300, 300, 0.0, 0.0, 200, 140))
+
+function showHighScore()
+	local file = io.open("highScore.txt", "r")
+
+	io.input(file)
+	bestSwag = io.read();
+	io.close(file)
+
+end
 
 function menuRender()
 	engi.windowClear()
@@ -22,10 +32,12 @@ function menuRender()
 	end
 	
 	engi.renderPlayer(Player)
+	engi.printScore(bestSwag, "TOP SWAG:");
 	engi.windowDisplay()
 end
 
 
+showHighScore(SWAG_SCORE);
 while(buttonPressed == -1)
 do
 	engi.getGameTime();
