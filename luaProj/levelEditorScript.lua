@@ -11,7 +11,7 @@ gameTime = 0
 
 function levleEditorRender()
 	engi.windowClear()
-
+	engi.renderArena()
 	engi.renderPlayer(Player)
 	
 	for y=1, #Walls
@@ -99,6 +99,7 @@ function handleInput()
 		do
 			engi.wallIntersectionTest(Player, Walls[y], 0)
 			if intersectionTest == -1 then
+				Walls[y]:remove()
 				table.remove(Walls,y);
 				input = -1
 				inputDelay = 0

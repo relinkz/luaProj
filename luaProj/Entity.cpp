@@ -188,11 +188,11 @@ int Entity::UpdatePlayer(lua_State *L)
 		float xSpeed = 0;
 		float ySpeed = 0;
 		float speedMultplier = 1;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
-			speedMultplier = 0.5f;
+			speedMultplier = 0.25f;
 		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 		{
 			speedMultplier = 2.0f;
 		}

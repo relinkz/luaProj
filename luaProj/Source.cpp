@@ -1,18 +1,29 @@
 #include <string>
 #include "Entity.h"
+#include <ctime>
+#include <cstdlib>
 #include "sfml/System.hpp"
+#include <SFML/Audio.hpp>
 
 using namespace std;
 
 //lua funktion som skapar spelare
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 720;
+const int ARENA_WIDTH = 640;
+const int ARENA_HEIGHT = 480;
 
-sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!");
+int globalXOffSet = (SCREEN_WIDTH - ARENA_WIDTH) / 2;
+int globalYOffSet = (SCREEN_HEIGHT - ARENA_HEIGHT) / 2;
+
+sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SFML works!");
 //sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!", sf::Style::Fullscreen);
 sf::Event event;
 sf::Font gameFont;
 sf::Clock gameClock;
 std::vector<sf::Texture*> textures;
 float gameTime = 0;
+
 
 lua_State *L;
 
@@ -35,6 +46,7 @@ static int renderPlayer(lua_State* L);
 static int renderEnemy(lua_State *L);
 static int renderParticle(lua_State *L);
 static int renderMenu(lua_State *L);
+static int renderArena(lua_State *L);
 static int printScore(lua_State *L);
 
 static int sendTimeToLua(lua_State *L);
@@ -46,6 +58,7 @@ static int windowClear(lua_State *L);
 void playGame();
 
 sf::Text text;
+
 int buttonPressed = 0;
 
 void renderBox(float x, float y);
@@ -57,6 +70,7 @@ int main()
 	initializeLua();
 	registerEntityFunctions(L);
 	registerEngineFunctions(L);
+	std::srand(unsigned(time(0)));
 
 	if (!gameFont.loadFromFile("imagine_font.ttf"))
 	{
@@ -76,12 +90,13 @@ int main()
 
 static int renderPlayer(lua_State *L)
 {
+
 	Entity* aPtr = Entity::CheckEntity(L, 1);
 
 	if (aPtr != nullptr)
 	{
-		float x = aPtr->getXPos();
-		float y = aPtr->getYPos();
+		float x = aPtr->getXPos() + globalXOffSet;
+		float y = aPtr->getYPos() + globalYOffSet;
 		int width = aPtr->getWidth();
 		int height = aPtr->getHeight();
 		sf::RectangleShape shape(sf::Vector2f(width, height));
@@ -89,6 +104,9 @@ static int renderPlayer(lua_State *L)
 		shape.setPosition(x, y);
 		window.draw(shape);
 	}
+
+
+
 	return 0; // because fack you, thats why!
 }
 
@@ -98,12 +116,29 @@ static int renderEnemy(lua_State *L)
 
 	if (aPtr != nullptr)
 	{
-		float x = aPtr->getXPos();
-		float y = aPtr->getYPos();
+		float x = aPtr->getXPos() + globalXOffSet;
+		float y = aPtr->getYPos() + globalYOffSet;
 		int width = aPtr->getWidth();
 		int height = aPtr->getHeight();
 		sf::RectangleShape shape(sf::Vector2f(width, height));
-		shape.setFillColor(sf::Color::Red);
+		int type = rand() % 3;
+		int r = 0;
+		int g = 0;
+		int b = 0;
+		if (type == 0)
+		{
+			r = rand() % 255;
+		}
+		if (type == 1)
+		{
+			g = rand() % 255;
+		}
+		if (type == 2)
+		{
+			b = rand() % 255;
+		}
+		shape.setFillColor(sf::Color(r,g,b,255));
+		//shape.setFillColor(sf::Color::Red);
 		shape.setPosition(x, y);
 		window.draw(shape);
 
@@ -117,10 +152,10 @@ static int renderWall(lua_State *L)
 
 	if (aPtr != nullptr)
 	{
-		float x = aPtr->getXPos();
-		float y = aPtr->getYPos();
+		float x = aPtr->getXPos() + globalXOffSet;
+		float y = aPtr->getYPos() + globalYOffSet;
 		sf::RectangleShape shape(sf::Vector2f(10, 10));
-		shape.setFillColor(sf::Color::White);
+		shape.setFillColor(sf::Color::Black);
 		shape.setPosition(x, y);
 		window.draw(shape);
 
@@ -145,8 +180,8 @@ static int renderParticle(lua_State *L)
 	if (aPtr != nullptr)
 	{
 		sf::Sprite temp;
-		float x = aPtr->getXPos();
-		float y = aPtr->getYPos();
+		float x = aPtr->getXPos() + globalXOffSet;
+		float y = aPtr->getYPos() + globalYOffSet;
 
 		temp.setPosition(x, y);
 		temp.setTexture(*textures.at(index));
@@ -166,8 +201,8 @@ static int renderMenu(lua_State *L)
 
 	if (aPtr != nullptr)
 	{
-		float x = aPtr->getXPos();
-		float y = aPtr->getYPos();
+		float x = aPtr->getXPos() + globalXOffSet;
+		float y = aPtr->getYPos() + globalYOffSet;
 		if (buttonType == 1)
 		{
 			text.setString("Play");
@@ -193,6 +228,48 @@ static int renderMenu(lua_State *L)
 
 		window.draw(text);
 	}
+	return 0;
+}
+
+static int renderArena(lua_State *L)
+{
+	float x = 0;
+	float y = 0;
+	int width = SCREEN_WIDTH;
+	int height = SCREEN_HEIGHT;
+	sf::RectangleShape shape(sf::Vector2f(width, height));
+	int type = rand() % 3;
+	int r = 0;
+	int g = 0;
+	int b = 0;
+	if (type == 0)
+	{
+		r = rand() % 255;
+	}
+	if (type == 1)
+	{
+		g = rand() % 255;
+	}
+	if (type == 2)
+	{
+		b = rand() % 255;
+	}
+	shape.setFillColor(sf::Color(r, g, b, 255));
+	//shape.setFillColor(sf::Color::White);
+	shape.setPosition(x, y);
+	window.draw(shape);
+
+
+	//renders the ARENA
+	x = globalXOffSet;
+	y = globalYOffSet;
+	width = ARENA_WIDTH;
+	height = ARENA_HEIGHT;
+	shape = sf::RectangleShape(sf::Vector2f(width, height));
+	shape.setFillColor(sf::Color::White);
+	shape.setPosition(x, y);
+	window.draw(shape);
+	//
 	return 0;
 }
 
@@ -494,12 +571,14 @@ void registerEngineFunctions(lua_State * L)
 {
 	//här inititierar metedata, such meta such wow
 	luaL_newmetatable(L, "MainMeta");
-
+	
 	luaL_Reg EngineTable[] =
 	{
 		{ "renderPlayer",			renderPlayer },
 		{ "renderEnemy",			renderEnemy},
 		{ "renderWall",				renderWall },
+		{ "renderMenu",				renderMenu },
+		{ "renderArena",			renderArena },
 		{ "windowClear",			windowClear },
 		{ "windowDisplay",			windowDisplay },
 		{ "intersectionTest",		intersectionTest},
@@ -507,7 +586,6 @@ void registerEngineFunctions(lua_State * L)
 		{ "getInput",				getInput },
 		{ "printScore",				printScore },
 		{ "renderParticle",			renderParticle },
-		{ "renderMenu",				renderMenu },
 		{ "buttonIntersectionTest", buttonIntersectionTest },
 		{ "getGameTime",			sendTimeToLua },
 		{"resetGameTime",			resetTime},

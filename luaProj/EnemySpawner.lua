@@ -1,13 +1,16 @@
 math.randomseed (os.time () - os.clock () * 1000)
 
+ARENA_WIDTH = 640
+ARENA_HEIGHT = 480
+
 function test ()
 	print("it works!")
 end
 
 function speedx (toSpawnX)
-	speedX = math.random (2, 50)
+	speedX = math.random (20, 50)
 	speedX = speedX * 0.01
-	if (640 - toSpawnX < toSpawnX) then
+	if (ARENA_WIDTH - toSpawnX < toSpawnX) then
 		speedX = speedX * - 1
 	end
 
@@ -15,10 +18,10 @@ function speedx (toSpawnX)
 end
 
 function speedy (toSpawnY)
-	speedY = math.random (2, 50)
+	speedY = math.random (20, 50)
 	speedY = speedY * 0.01;
 
-	if(480 - toSpawnY < toSpawnY) then
+	if(ARENA_HEIGHT - toSpawnY < toSpawnY) then
 		speedY = speedY * - 1
 	end
 
@@ -76,10 +79,10 @@ function findOutClosestSide (xPos, yPos, xMax, yMax)
 end
 
 function spawnPos()
-	windowHeight = 480;
+	windowHeight = ARENA_HEIGHT;
 	halfWindowHeight = (windowHeight / 2);
 
-	windowWidth = 640;
+	windowWidth = ARENA_WIDTH;
 	halfWindowHeight = (windowWidth / 2);
 
 	spawnY = math.random (10, windowWidth);

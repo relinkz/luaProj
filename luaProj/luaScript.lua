@@ -2,7 +2,8 @@ print(package.path)
 require("EnemySpawner")
 
 Player = Entity.New(150, 50, 0.5, 0.5, 10, 10)
-Enemies = {Entity.New(300,300,0.0,0.0,20,100)}
+--Enemies = {Entity.New(300, 300, 0.0, 0.0, 50, 50)}
+Enemies = {}
 Walls = {}
 Particles = {}
 engi = Engine
@@ -14,6 +15,8 @@ xPos = 0
 yPos = 0
 counter = 0.0
 nrOfEnemies = 0
+maxNrOfEnemies = 50
+enemySpeedMulti = 1.0
 enemyIntersectionResult = 1
 gameTime = 0;
 timer = 0
@@ -36,8 +39,10 @@ function saveSwagToFile(score)
 	io.close(file)
 end
 
-	function gameRender()
+function gameRender()
 	engi.windowClear()
+
+	engi.renderArena()
 	engi.renderPlayer(Player)
 	engi.renderEnemy(Enemy)
 	
@@ -117,11 +122,14 @@ function destroyOutsideBullets()
 end
 
 function spawnEnemy()
-	if nrOfEnemies < 50 then
+	if nrOfEnemies < maxNrOfEnemies then
 		spawnX, spawnY, spawnSpeedX, spawnSpeedY = spawnPos();
 
 		width = getWidth()
 		height = getHeight()
+
+		spawnSpeedX = spawnSpeedX * enemySpeedMulti
+		spawnSpeedY = spawnSpeedY * enemySpeedMulti
 
 		spawnBullet (spawnX, spawnY, spawnSpeedX, spawnSpeedY, width, height)
 
@@ -174,7 +182,7 @@ while(true)
 			Particles[y]:Update(gameTime)
 		end
 
-		--spawnEnemy()
+		spawnEnemy()
 		for y=1, #Enemies
 		do
 			Enemies[y]:Update (gameTime)
@@ -199,7 +207,7 @@ while(true)
 			table.remove(Particles, 1)
 			counter = 0
 		end
-		if bonusScoreCounter >= 2 then
+		if bonusScoreCounter >= 0.5 then
 			bonusScoreCounter = 0
 			SWAG_SCORE = SWAG_SCORE + 50
 			Player:getPos();
@@ -209,6 +217,8 @@ while(true)
 		if timer >= 1 then
 		 SWAG_SCORE = SWAG_SCORE + 1
 		 timer = 0
+		 enemySpeedMulti = enemySpeedMulti + 0.1
+		 maxNrOfEnemies = maxNrOfEnemies + 1
 		end
 		gameRender()
 	end
