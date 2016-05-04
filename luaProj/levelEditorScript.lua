@@ -7,6 +7,7 @@ inputDelay = 0
 intersectionTest = 1
 engi = Engine
 done = -1
+gameTime = 0
 
 function levleEditorRender()
 	engi.windowClear()
@@ -119,7 +120,6 @@ while(done == -1)
 		inputDelay = inputDelay + 1
 		levleEditorRender()
 
-		engi.resetGameTime();
 	end
 count = #Walls
 for i=0, count do Walls[i]=nil end

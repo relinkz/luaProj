@@ -136,7 +136,6 @@ while(true)
 			engi.wallIntersectionTest(Player, Walls[y], 1) 
 		end
 
-		--Player:Update()
 		engi.getGameTime();
 		Player:UpdatePlayer(gameTime)
 
@@ -181,6 +180,5 @@ while(true)
 			gameRender()
 	end
 
-	engi.resetGameTime();
 
 

@@ -577,6 +577,7 @@ int sendTimeToLua(lua_State *L)
 {
 	sf::Time eTime = gameClock.getElapsedTime();
 	float s = eTime.asSeconds();
+	s = gameClock.restart().asSeconds();
 	lua_pushnumber(L,s);
 	lua_setglobal(L, "gameTime");
 
