@@ -64,6 +64,7 @@ sf::SoundBuffer soundBuffer;
 sf::Sound sound;
 
 int buttonPressed = 0;
+bool secretLevelPlay = false;
 
 void renderBox(float x, float y);
 void loadTextures();
@@ -130,20 +131,23 @@ static int renderEnemy(lua_State *L)
 		int height = aPtr->getHeight();
 		sf::RectangleShape shape(sf::Vector2f(width, height));
 		int type = rand() % 3;
-		int r = 0;
+		int r = 255;
 		int g = 0;
 		int b = 0;
-		if (type == 0)
+		if (secretLevelPlay)
 		{
-			r = rand() % 255;
-		}
-		if (type == 1)
-		{
-			g = rand() % 255;
-		}
-		if (type == 2)
-		{
-			b = rand() % 255;
+			if (type == 0)
+			{
+				r = rand() % 255;
+			}
+			if (type == 1)
+			{
+				g = rand() % 255;
+			}
+			if (type == 2)
+			{
+				b = rand() % 255;
+			}
 		}
 		shape.setFillColor(sf::Color(r,g,b,255));
 		//shape.setFillColor(sf::Color::Red);
@@ -223,6 +227,10 @@ static int renderMenu(lua_State *L)
 		{
 			text.setString("Exit");
 		}
+		if (buttonType == 4)
+		{
+			text.setString("		   WOW \n secret level \n much secret \n many wow");
+		}
 		sf::RectangleShape shape(sf::Vector2f(aPtr->getWidth(), aPtr->getHeight()));
 		shape.setFillColor(sf::Color::Blue);
 		shape.setPosition(x, y);
@@ -250,18 +258,22 @@ static int renderArena(lua_State *L)
 	int r = 0;
 	int g = 0;
 	int b = 0;
-	if (type == 0)
+	if (secretLevelPlay)
 	{
-		r = rand() % 255;
+		if (type == 0)
+		{
+			r = rand() % 255;
+		}
+		if (type == 1)
+		{
+			g = rand() % 255;
+		}
+		if (type == 2)
+		{
+			b = rand() % 255;
+		}
 	}
-	if (type == 1)
-	{
-		g = rand() % 255;
-	}
-	if (type == 2)
-	{
-		b = rand() % 255;
-	}
+
 	shape.setFillColor(sf::Color(r, g, b, 255));
 	//shape.setFillColor(sf::Color::White);
 	shape.setPosition(x, y);
@@ -384,6 +396,7 @@ static int intersectionTest(lua_State *L)
 	{
 		lua_pushinteger(L, -1);
 		lua_setglobal(L, "enemyIntersectionResult");
+		sound.stop();
 	}
 
 	return 0;
@@ -411,6 +424,10 @@ static int buttonIntersectionTest(lua_State *L)
 		lua_pushinteger(L, -1);
 		lua_setglobal(L, "intersectionTest");
 		buttonPressed = lua_tonumber(L, 3);
+		if (buttonPressed == 4)
+		{
+			secretLevelPlay = true;
+		}
 	}
 	else
 	{
@@ -624,14 +641,17 @@ void playGame()
 			cerr << lua_tostring(L, -1) << endl;
 		}
 
-		if (buttonPressed == 1)
+		if (buttonPressed == 1 ||buttonPressed == 4)
 		{
-			if (!soundBuffer.loadFromFile("Nyan_Cat.wav"))
+			if (secretLevelPlay == true)
 			{
+				if (!soundBuffer.loadFromFile("Nyan_Cat.wav"))
+				{
 
+				}
+				sound.setBuffer(soundBuffer);
+				sound.play();
 			}
-			sound.setBuffer(soundBuffer);
-			sound.play();
 			int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
 
 			if (error)

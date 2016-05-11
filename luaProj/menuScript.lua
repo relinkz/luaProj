@@ -38,6 +38,10 @@ end
 
 
 showHighScore(SWAG_SCORE);
+SWAG_SCORE = tonumber(bestSwag)
+if SWAG_SCORE > 7000 then
+table.insert(Buttons, Entity.New(600, 0, 0.0, 0.0, 220, 140))
+end
 while(buttonPressed == -1)
 do
 	engi.getGameTime();
