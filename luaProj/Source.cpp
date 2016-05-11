@@ -138,7 +138,7 @@ static int renderEnemy(lua_State *L)
 		int r = 255;
 		int g = 0;
 		int b = 0;
-		if (secretLevelPlay)
+		if (levelSelected == 3)
 		{
 			if (type == 0)
 			{
@@ -270,7 +270,7 @@ static int renderArena(lua_State *L)
 	int r = 0;
 	int g = 0;
 	int b = 0;
-	if (secretLevelPlay)
+	if (levelSelected == 3)
 	{
 		if (type == 0)
 		{
