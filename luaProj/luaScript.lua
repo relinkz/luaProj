@@ -92,7 +92,7 @@ function release()
 		Particles[y]:remove()
 	end
 	Player:remove()
-	collectgarbage() 
+	--collectgarbage() 
 end
 function destroyOutsideBullets()
 
@@ -167,7 +167,7 @@ function spawnWalls()
 		numberX = tonumber(contentX)
 		numberY = tonumber(contentY)
 
-		table.insert(Walls,Entity.New(numberX,numberY,0.0,0.0))
+		table.insert(Walls,Entity.New(numberX,numberY,0.0,0.0,10,10))
 
 		contentX = io.read()
 		contentY = io.read()

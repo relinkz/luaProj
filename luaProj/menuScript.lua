@@ -72,7 +72,7 @@ do
 		Buttons[y]:remove()
 		end
 		Player:remove()
-		collectgarbage() 
+		--collectgarbage() 
 		return
 	end
 end

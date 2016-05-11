@@ -1,5 +1,5 @@
 Player = Entity.New(98, 98, 0.0, 0.0,10,10)
-Walls = {}
+Walls = {Entity.New(-100, -100, 0.0, 0.0,10,10)}
 xPos = -1
 yPos = -1
 input = -1
@@ -42,7 +42,7 @@ function readFile()
 		numberX = tonumber(contentX)
 		numberY = tonumber(contentY)
 
-		table.insert(Walls,Entity.New(numberX,numberY,0.0,0.0))
+		table.insert(Walls,Entity.New(numberX,numberY,0.0,0.0,10,10))
 
 		contentX = io.read()
 		contentY = io.read()
@@ -84,7 +84,7 @@ function handleInput()
 		end
 		if intersectionTest == 1 then
 			Player:getPos()
-			table.insert(Walls,Entity.New(xPos, yPos, 0.0, 0.0))
+			table.insert(Walls,Entity.New(xPos, yPos, 0.0, 0.0, 10, 10))
 		end
 		input = -1
 		inputDelay = 0

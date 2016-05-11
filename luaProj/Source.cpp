@@ -16,8 +16,8 @@ const int ARENA_HEIGHT = 480;
 int globalXOffSet = (SCREEN_WIDTH - ARENA_WIDTH) / 2;
 int globalYOffSet = (SCREEN_HEIGHT - ARENA_HEIGHT) / 2;
 
-sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SFML works!");
-//sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doge andventures!!", sf::Style::Fullscreen);
+//sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SFML works!");
+sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doge andventures!!", sf::Style::Fullscreen);
 sf::Event event;
 sf::Font gameFont;
 sf::Clock gameClock;
