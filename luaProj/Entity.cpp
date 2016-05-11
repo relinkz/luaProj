@@ -226,6 +226,9 @@ int Entity::UpdatePlayer(lua_State *L)
 		aPtr->spriteSheetLevel.push_back(walkingAnimationFrame1);
 		aPtr->spriteSheetLevel.push_back(walkingAnimationFrame2);
 
+		aPtr->width = 40;
+		aPtr->height = 30;
+
 		aPtr->spriteStage = 0;
 		aPtr->animationTimer = 0.0f;
 	}
@@ -324,16 +327,20 @@ int Entity::UpdatePlayer(lua_State *L)
 			sf::Sprite* temp = nullptr;
 			temp = aPtr->getPlayerSprite();
 			temp->setScale(-1, 1);
+
+			temp->setPosition(aPtr->xPos + aPtr->width, aPtr->yPos);
+
 			aPtr->playerSprite->setTextureRect(aPtr->spriteSheetLevel.at(aPtr->spriteStage));
-			
 		}
 		else
 		{
 			sf::Sprite* temp = nullptr;
+
 			temp = aPtr->getPlayerSprite();
 			temp->setScale(1, 1);
-			aPtr->playerSprite->setTextureRect(aPtr->spriteSheetLevel.at(aPtr->spriteStage));
+			temp->setPosition(aPtr->xPos, aPtr->yPos);
 
+			aPtr->playerSprite->setTextureRect(aPtr->spriteSheetLevel.at(aPtr->spriteStage));
 		}
 
 	}

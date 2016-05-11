@@ -16,8 +16,8 @@ const int ARENA_HEIGHT = 480;
 int globalXOffSet = (SCREEN_WIDTH - ARENA_WIDTH) / 2;
 int globalYOffSet = (SCREEN_HEIGHT - ARENA_HEIGHT) / 2;
 
-sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SFML works!");
-//sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!", sf::Style::Fullscreen);
+//sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "SFML works!");
+sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doge andventures!!", sf::Style::Fullscreen);
 sf::Event event;
 sf::Font gameFont;
 sf::Clock gameClock;
@@ -54,6 +54,7 @@ static int printScore(lua_State *L);
 static int sendTimeToLua(lua_State *L);
 static int resetTime(lua_State *L);
 static int startMusic(lua_State *L);
+static int getLevelSelected(lua_State *L);
 
 static int windowDisplay(lua_State *L);
 static int windowClear(lua_State *L);
@@ -66,6 +67,11 @@ sf::SoundBuffer soundBuffer;
 sf::Sound sound;
 
 int buttonPressed = 0;
+int levelSelected = 0;
+
+
+bool secretLevelPlay = false;
+bool rickRolled = false;
 
 void renderBox(float x, float y);
 void loadTextures();
@@ -85,7 +91,6 @@ int main()
 	}
 	text.setFont(gameFont);
 	loadTextures();
-
 	if (!soundBuffer.loadFromFile("canary.wav"))
 		return -1;
 	sound.setBuffer(soundBuffer);
@@ -111,13 +116,21 @@ static int renderPlayer(lua_State *L)
 
 		sf::Sprite* toDraw = nullptr;
 		toDraw = aPtr->getPlayerSprite();
-		toDraw->setPosition(x, y);
+
+		toDraw->setPosition(toDraw->getPosition().x + globalXOffSet, toDraw->getPosition().y + globalYOffSet);
+
+		//toDraw->setPosition(x, y);
+
+		//sf::RectangleShape shape(sf::Vector2f(aPtr->getWidth(), aPtr->getHeight()));
+		//shape.setFillColor(sf::Color::Black);
+		//shape.setPosition(x, y);
 
 		//shape.setFillColor(sf::Color::Green);
 		//creating the playersheet
 
-
+		//window.draw(shape);
 		window.draw(*toDraw);
+		
 	}
 
 
@@ -136,20 +149,23 @@ static int renderEnemy(lua_State *L)
 		int height = aPtr->getHeight();
 		sf::RectangleShape shape(sf::Vector2f(width, height));
 		int type = rand() % 3;
-		int r = 0;
+		int r = 255;
 		int g = 0;
 		int b = 0;
-		if (type == 0)
+		if (levelSelected == 3)
 		{
-			r = rand() % 255;
-		}
-		if (type == 1)
-		{
-			g = rand() % 255;
-		}
-		if (type == 2)
-		{
-			b = rand() % 255;
+			if (type == 0)
+			{
+				r = rand() % 255;
+			}
+			if (type == 1)
+			{
+				g = rand() % 255;
+			}
+			if (type == 2)
+			{
+				b = rand() % 255;
+			}
 		}
 		shape.setFillColor(sf::Color(r,g,b,255));
 		//shape.setFillColor(sf::Color::Red);
@@ -229,6 +245,18 @@ static int renderMenu(lua_State *L)
 		{
 			text.setString("Exit");
 		}
+		if ((x - globalXOffSet) == 450 && (y - globalYOffSet) == 0)
+		{
+			text.setString("secret Level?");
+		}
+		if ((x - globalXOffSet) == 450 && (y - globalYOffSet) == 150)
+		{
+			text.setString("		real \n secret level");
+		}
+		if ((x - globalXOffSet) == -50 && (y - globalYOffSet) == 150)
+		{
+			text.setString("		   WOW \n secret level \n much secret \n many wow");
+		}
 		sf::RectangleShape shape(sf::Vector2f(aPtr->getWidth(), aPtr->getHeight()));
 		shape.setFillColor(sf::Color::Blue);
 		shape.setPosition(x, y);
@@ -256,18 +284,22 @@ static int renderArena(lua_State *L)
 	int r = 0;
 	int g = 0;
 	int b = 0;
-	if (type == 0)
+	if (levelSelected == 3)
 	{
-		r = rand() % 255;
+		if (type == 0)
+		{
+			r = rand() % 255;
+		}
+		if (type == 1)
+		{
+			g = rand() % 255;
+		}
+		if (type == 2)
+		{
+			b = rand() % 255;
+		}
 	}
-	if (type == 1)
-	{
-		g = rand() % 255;
-	}
-	if (type == 2)
-	{
-		b = rand() % 255;
-	}
+
 	shape.setFillColor(sf::Color(r, g, b, 255));
 	//shape.setFillColor(sf::Color::White);
 	shape.setPosition(x, y);
@@ -290,37 +322,63 @@ static int renderArena(lua_State *L)
 static int printScore(lua_State *L)
 {
 	string score = lua_tostring(L, 1);
+
 	int SWAG_SCORE = lua_tonumber(L, 1);
+	if (secretLevelPlay)
+	{
+		score = SWAG_SCORE;
+	}
+	else
+	{
+		int start = 0;
+		int end = score.find(".");
+		score = score.substr(start, end);
+	}
+
 
 	string toSay = "";
 	toSay = lua_tostring(L, 2);
+
+	float x = lua_tonumber(L, 3);
+	float y = lua_tonumber(L, 4);
 
 
 	text.setString(toSay + score);
 
 	text.setCharacterSize(24);
+	if (levelSelected == 2 || levelSelected == 4)
+	{
+		text.setColor(sf::Color::Black);
+	}
+	else
+	{
+		text.setColor(sf::Color::White);
+	}
 
-	text.setColor(sf::Color::White);
 
-	text.setPosition(0, 0);
+	text.setPosition(x, y);
 	int width = text.getLocalBounds().width;
-	sf::Sprite temp;
-	temp.setPosition(width + 10, 0);
-	int index = 0;
-	for (int i = 1; i <= textures.size(); i++)
+	if (toSay != "FPS: " && levelSelected != 2 && levelSelected != 4)
 	{
-		if (SWAG_SCORE > (5000 / textures.size()) * i)
+		sf::Sprite temp;
+		temp.setPosition(width + 10, 0);
+		int index = 0;
+		for (int i = 1; i <= textures.size(); i++)
 		{
-			index++;
+			if (SWAG_SCORE > (5000 / textures.size()) * i)
+			{
+				index++;
+			}
 		}
-	}
-	if (index >= textures.size())
-	{
-		index = textures.size() - 1;
-	}
-	temp.setTexture(*textures.at(index));
+		if (index >= textures.size())
+		{
+			index = textures.size() - 1;
+		}
+		temp.setTexture(*textures.at(index));
 
-	window.draw(temp);
+		window.draw(temp);
+	}
+
 	window.draw(text);
 
 	return 0;
@@ -351,6 +409,7 @@ static int intersectionTest(lua_State *L)
 
 	float xDiff = abs(Player->getXPos() - Enemy->getXPos());
 	float yDiff = abs(Player->getYPos() - Enemy->getYPos());
+
 	float maxXDiffAllowed = 10;
 	float maxYDiffAllowed = 10;
 
@@ -390,6 +449,7 @@ static int intersectionTest(lua_State *L)
 	{
 		lua_pushinteger(L, -1);
 		lua_setglobal(L, "enemyIntersectionResult");
+		sound.stop();
 	}
 
 	return 0;
@@ -412,11 +472,26 @@ static int buttonIntersectionTest(lua_State *L)
 	result = playerRect.intersects(enenmyRect);
 
 
-	if (result)
+	if (result )
 	{
+		levelSelected = 1;
 		lua_pushinteger(L, -1);
 		lua_setglobal(L, "intersectionTest");
 		buttonPressed = lua_tonumber(L, 3);
+		if (Button->getXPos() == 450 && Button->getYPos() == 0)
+		{
+			levelSelected = 2;
+			rickRolled = true;
+		}
+		if (Button->getXPos() == 450 && Button->getYPos() == 150)
+		{
+			levelSelected = 4;
+		}
+		if (Button->getXPos() == -50 && Button->getYPos() == 150)
+		{
+			levelSelected = 3;
+			secretLevelPlay = true;
+		}
 	}
 	else
 	{
@@ -439,7 +514,29 @@ static int wallIntersectionTest(lua_State *L)
 	bool result = false;
 	float xDiff = abs(Player->getXPos() - Wall->getXPos());
 	float yDiff = abs(Player->getYPos() - Wall->getYPos());
-	if (xDiff < 11 && yDiff < 11)
+
+	float maxXDiffAllowed = 10;
+	float maxYDiffAllowed = 10;
+
+	if (Player->getXPos() < Wall->getXPos())
+	{
+		maxXDiffAllowed = Player->getWidth();
+	}
+	else
+	{
+		maxXDiffAllowed = Wall->getWidth();
+	}
+	if (Player->getYPos() < Wall->getYPos())
+	{
+		maxYDiffAllowed = Player->getHeight();
+	}
+	else
+	{
+		maxYDiffAllowed = Wall->getHeight();
+	}
+
+
+	if (xDiff < maxXDiffAllowed && yDiff < maxYDiffAllowed)
 	{
 		result = true;
 
@@ -604,6 +701,7 @@ void registerEngineFunctions(lua_State * L)
 		{ "getGameTime",			sendTimeToLua },
 		{"resetGameTime",			resetTime},
 		{ "startMusic",				startMusic },
+		{ "getLevelSelected",		getLevelSelected },
 		{ NULL, NULL }
 	};
 
@@ -630,14 +728,35 @@ void playGame()
 			cerr << lua_tostring(L, -1) << endl;
 		}
 
-		if (buttonPressed == 1)
+		if (buttonPressed == 1 ||buttonPressed >= 4)
 		{
-			if (!soundBuffer.loadFromFile("Nyan_Cat.wav"))
+			if (levelSelected == 3)
 			{
+				if (!soundBuffer.loadFromFile("Nyan_Cat.wav"))
+				{
 
+				}
+				sound.setBuffer(soundBuffer);
+				sound.play();
 			}
-			sound.setBuffer(soundBuffer);
-			sound.play();
+			if (levelSelected == 2)
+			{
+				if (!soundBuffer.loadFromFile("Never_Gonna_Give_You_Up.wav"))
+				{
+
+				}
+				sound.setBuffer(soundBuffer);
+				sound.play();
+			}
+			if (levelSelected == 4)
+			{
+				if (!soundBuffer.loadFromFile("Trololo_Sing_Along_.wav"))
+				{
+
+				}
+				sound.setBuffer(soundBuffer);
+				sound.play();
+			}
 			int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
 
 			if (error)
@@ -687,8 +806,11 @@ int sendTimeToLua(lua_State *L)
 {
 	sf::Time eTime = gameClock.getElapsedTime();
 	float s = eTime.asSeconds();
+	float framerate = 1.f / gameClock.getElapsedTime().asSeconds();
 	s = gameClock.restart().asSeconds();
 	gameTime = s;
+	lua_pushnumber(L, framerate);
+	lua_setglobal(L, "FPS");
 	lua_pushnumber(L,s);
 	lua_setglobal(L, "gameTime");
 
@@ -715,12 +837,33 @@ void release()
 
 static int startMusic(lua_State *L)
 {
-	if (!soundBuffer.loadFromFile("Nyan_Cat.wav"))
+	if (secretLevelPlay == true)
 	{
+		if (!soundBuffer.loadFromFile("Nyan_Cat.wav"))
+		{
 
+		}
+		sound.setBuffer(soundBuffer);
+		sound.play();
 	}
-	sound.setBuffer(soundBuffer);
-	sound.play();
+	if (rickRolled == true)
+	{
+		if (!soundBuffer.loadFromFile("Never_Gonna_Give_You_Up.wav"))
+		{
+
+		}
+		sound.setBuffer(soundBuffer);
+		sound.play();
+	}
+
 
 	return 0;
+}
+
+static int getLevelSelected(lua_State *L)
+{
+	lua_pushnumber(L, levelSelected);
+	lua_setglobal(L, "LevelSelected");
+
+	return 1;
 }
