@@ -212,6 +212,9 @@ int Entity::UpdatePlayer(lua_State *L)
 		sf::IntRect animationFrame4(38 * 3, 0, 38, 30);
 		sf::IntRect animationFrame5(38 * 4, 0, 38, 30);
 
+		sf::IntRect walkingAnimationFrame1(0, 35, 38, 30);
+		sf::IntRect walkingAnimationFrame2(38, 35, 38, 30);
+
 		aPtr->playerSprite->setTextureRect(animationFrame4);
 
 		aPtr->spriteSheetLevel.push_back(animationFrame1);
@@ -219,6 +222,9 @@ int Entity::UpdatePlayer(lua_State *L)
 		aPtr->spriteSheetLevel.push_back(animationFrame3);
 		aPtr->spriteSheetLevel.push_back(animationFrame4);
 		aPtr->spriteSheetLevel.push_back(animationFrame5);
+
+		aPtr->spriteSheetLevel.push_back(walkingAnimationFrame1);
+		aPtr->spriteSheetLevel.push_back(walkingAnimationFrame2);
 
 		aPtr->spriteStage = 0;
 		aPtr->animationTimer = 0.0f;
@@ -229,6 +235,8 @@ int Entity::UpdatePlayer(lua_State *L)
 		float xSpeed = 0;
 		float ySpeed = 0;
 		float speedMultplier = 1;
+		bool isIdle = true;
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 			speedMultplier = 0.25f;
@@ -242,44 +250,92 @@ int Entity::UpdatePlayer(lua_State *L)
 		xSpeed += BASE_ENTITY_SPEED * dt * speedMultplier;
 		ySpeed += BASE_ENTITY_SPEED * dt * speedMultplier;
 
+		aPtr->animationTimer += dt;
+		bool walkLeft = false;
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && aPtr->getXPos() > 0)
 		{
+			walkLeft = true;
 			aPtr->move(-xSpeed, 0.0f);
+			if (aPtr->spriteStage < 5)
+			{
+				//if player just started walking
+				aPtr->spriteStage = 5;
+				aPtr->playerSprite->setTextureRect(aPtr->spriteSheetLevel.at(aPtr->spriteStage));
+			}
+			isIdle = false;
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && aPtr ->getYPos () > 0)
 		{
 			aPtr->move(0.0f, -ySpeed);
+			isIdle = false;
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && aPtr->getXPos() < (640 - aPtr->getWidth()))
 		{
 			aPtr->move(xSpeed, 0.0f);
+			isIdle = false;
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && aPtr->getYPos() < (480 - aPtr->getHeight()))
 		{
 			aPtr->move(0.0f, ySpeed);
+			isIdle = false;
+		}
+		
+		if (isIdle == true)
+		{
+			if (aPtr->animationTimer > 1.0f)
+			{
+				if (aPtr->spriteStage > 5)
+				{
+					//player just went Idle
+					aPtr->spriteStage = 0;
+				}
+				aPtr->animationTimer = 0.0f;
+				aPtr->spriteStage++;
+			}
+			if (aPtr->spriteStage == 5)
+			{
+				aPtr->spriteStage %= 5;
+			}
+		}
+		else
+		{
+			//hoppa mellan 2 steg, 5 och 6
+			if (aPtr->animationTimer > 1.0f)
+			{
+				aPtr->animationTimer = 0.0f;
+				if(aPtr->spriteStage == 5)
+				{
+					aPtr->spriteStage++;
+				}
+				else
+				{
+					aPtr->spriteStage = 5;
+				}
+				
+			}
+
+		}
+		if (walkLeft == true)
+		{
+			sf::Sprite* temp = nullptr;
+			temp = aPtr->getPlayerSprite();
+			temp->setScale(-1, 1);
+			aPtr->playerSprite->setTextureRect(aPtr->spriteSheetLevel.at(aPtr->spriteStage));
+			
+		}
+		else
+		{
+			sf::Sprite* temp = nullptr;
+			temp = aPtr->getPlayerSprite();
+			temp->setScale(1, 1);
+			aPtr->playerSprite->setTextureRect(aPtr->spriteSheetLevel.at(aPtr->spriteStage));
+
 		}
 
-		aPtr->playerSprite->setTextureRect(aPtr->spriteSheetLevel.at(aPtr->spriteStage));
-		aPtr->animationTimer += dt;
-
-		if (aPtr->animationTimer > 1.0f)
-		{
-			aPtr->spriteStage++;
-			aPtr->animationTimer = 0.0f;
-		}
-		if (aPtr->spriteStage == 5)
-		{
-			aPtr->spriteStage %= 5;
-		}
-		/*
-		if (aPtr->playerSprite != nullptr)
-		{
-			aPtr->playerSprite->setPosition(aPtr->xPos, aPtr->yPos);
-		}
-		*/
 	}
 
 	return 0;
