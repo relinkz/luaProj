@@ -226,8 +226,8 @@ int Entity::UpdatePlayer(lua_State *L)
 		aPtr->spriteSheetLevel.push_back(walkingAnimationFrame1);
 		aPtr->spriteSheetLevel.push_back(walkingAnimationFrame2);
 
-		aPtr->width = 40;
-		aPtr->height = 30;
+		//aPtr->width = 10;
+		//aPtr->height = 10;
 
 		aPtr->spriteStage = 0;
 		aPtr->animationTimer = 0.0f;

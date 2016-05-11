@@ -1,16 +1,62 @@
-﻿Build started 13/04/2016 10:21:31.
-     1>Project "C:\Users\Sebastian\Documents\Lua\luaProj\luaProj\luaProj.vcxproj" on node 2 (Build target(s)).
+﻿Build started 2016-05-11 12:19:05.
+     1>Project "C:\luaProj\luaProj\luaProj.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\Users\Sebastian\Documents\Lua\luaProj\luaProj\sfml\include /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\luaProj\luaProj\sfml\include /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Entity.cpp Source.cpp
+         Entity.cpp
+     1>Entity.cpp(139): warning C4244: 'initializing': conversion from 'lua_Number' to 'float', possible loss of data
+     1>Entity.cpp(154): warning C4244: 'initializing': conversion from 'lua_Number' to 'float', possible loss of data
+     1>Entity.cpp(155): warning C4244: 'initializing': conversion from 'lua_Number' to 'float', possible loss of data
+     1>Entity.cpp(157): warning C4244: 'initializing': conversion from 'lua_Number' to 'float', possible loss of data
+     1>Entity.cpp(158): warning C4244: 'initializing': conversion from 'lua_Number' to 'float', possible loss of data
+     1>Entity.cpp(160): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+     1>Entity.cpp(161): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+     1>Entity.cpp(183): warning C4244: 'initializing': conversion from 'lua_Number' to 'float', possible loss of data
+     1>Entity.cpp(234): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+     1>Entity.cpp(235): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
          Source.cpp
+     1>Source.cpp(115): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Source.cpp(136): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Source.cpp(186): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+     1>Source.cpp(191): warning C4018: '>=': signed/unsigned mismatch
+     1>Source.cpp(216): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+     1>Source.cpp(246): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Source.cpp(268): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Source.cpp(296): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Source.cpp(297): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>Source.cpp(300): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Source.cpp(312): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+     1>Source.cpp(328): warning C4244: 'initializing': conversion from 'lua_Number' to 'float', possible loss of data
+     1>Source.cpp(329): warning C4244: 'initializing': conversion from 'lua_Number' to 'float', possible loss of data
+     1>Source.cpp(346): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+     1>Source.cpp(350): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>Source.cpp(352): warning C4018: '<=': signed/unsigned mismatch
+     1>Source.cpp(354): warning C4018: '>': signed/unsigned mismatch
+     1>Source.cpp(359): warning C4018: '>=': signed/unsigned mismatch
+     1>Source.cpp(393): warning C4244: 'initializing': conversion from 'lua_Number' to 'float', possible loss of data
+     1>Source.cpp(394): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+     1>Source.cpp(428): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+     1>Source.cpp(429): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+     1>Source.cpp(454): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+     1>Source.cpp(455): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+     1>Source.cpp(465): warning C4244: '=': conversion from 'lua_Number' to 'int', possible loss of data
+     1>Source.cpp(498): warning C4244: 'initializing': conversion from 'lua_Number' to 'int', possible loss of data
+     1>Source.cpp(798): warning C4018: '<': signed/unsigned mismatch
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Sebastian\Documents\Lua\luaProj\Release\luaProj.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\Users\Sebastian\Documents\Lua\luaProj\\luaProj\sfml\lib "sfml-graphics.lib" "sfml-window.lib" "sfml-system.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Sebastian\Documents\Lua\luaProj\Release\luaProj.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Sebastian\Documents\Lua\luaProj\Release\luaProj.lib" /MACHINE:X86 /SAFESEH Release\Source.obj
-         Generating code
-         All 4 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-         Finished generating code
-         luaProj.vcxproj -> C:\Users\Sebastian\Documents\Lua\luaProj\Release\luaProj.exe
-     1>Done Building Project "C:\Users\Sebastian\Documents\Lua\luaProj\luaProj\luaProj.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\luaProj\Release\luaProj.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\luaProj\\luaProj\sfml\lib LuaLib.lib "sfml-graphics.lib" "sfml-window.lib" "sfml-system.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\luaProj\Release\luaProj.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\luaProj\Release\luaProj.lib" /MACHINE:X86 /SAFESEH Release\Entity.obj
+         Release\Source.obj
+     1>LuaLib.lib(lapi.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
+     1>LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>Source.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: bool __thiscall sf::SoundBuffer::loadFromFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (__imp_?loadFromFile@SoundBuffer@sf@@QAE_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
+     1>Source.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __thiscall sf::SoundBuffer::~SoundBuffer(void)" (__imp_??1SoundBuffer@sf@@QAE@XZ)
+     1>Source.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __thiscall sf::SoundBuffer::SoundBuffer(void)" (__imp_??0SoundBuffer@sf@@QAE@XZ)
+     1>Source.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall sf::Sound::setBuffer(class sf::SoundBuffer const &)" (__imp_?setBuffer@Sound@sf@@QAEXABVSoundBuffer@2@@Z)
+     1>Source.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall sf::Sound::stop(void)" (__imp_?stop@Sound@sf@@QAEXXZ)
+     1>Source.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall sf::Sound::play(void)" (__imp_?play@Sound@sf@@QAEXXZ)
+     1>Source.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: virtual __thiscall sf::Sound::~Sound(void)" (__imp_??1Sound@sf@@UAE@XZ)
+     1>Source.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __thiscall sf::Sound::Sound(void)" (__imp_??0Sound@sf@@QAE@XZ)
+     1>C:\luaProj\Release\luaProj.exe : fatal error LNK1120: 8 unresolved externals
+     1>Done Building Project "C:\luaProj\luaProj\luaProj.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:01.03
+Time Elapsed 00:00:01.43
