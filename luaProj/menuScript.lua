@@ -10,9 +10,9 @@ bestSwag = "0"
 input = -1
 gameTime = 0;
 
-table.insert(Buttons, Entity.New(300, 0,  0.0, 0.0, 200, 140))
-table.insert(Buttons, Entity.New(300, 150, 0.0, 0.0, 200, 140))
-table.insert(Buttons, Entity.New(300, 300, 0.0, 0.0, 200, 140))
+table.insert(Buttons, Entity.New(200, 0,  0.0, 0.0, 200, 140))
+table.insert(Buttons, Entity.New(200, 150, 0.0, 0.0, 200, 140))
+table.insert(Buttons, Entity.New(200, 300, 0.0, 0.0, 200, 140))
 
 function showHighScore()
 	local file = io.open("highScore.txt", "r")
@@ -39,8 +39,11 @@ end
 
 showHighScore(SWAG_SCORE);
 SWAG_SCORE = tonumber(bestSwag)
+if SWAG_SCORE > 5000 then
+table.insert(Buttons, Entity.New(450, 0, 0.0, 0.0, 220, 140))
+end
 if SWAG_SCORE > 7000 then
-table.insert(Buttons, Entity.New(600, 0, 0.0, 0.0, 220, 140))
+table.insert(Buttons, Entity.New(-50, 150, 0.0, 0.0, 220, 140))
 end
 while(buttonPressed == -1)
 do

@@ -22,6 +22,10 @@ gameTime = 0;
 musicTimer = 216.0
 timer = 0
 
+LevelSelected = 0
+
+FPS = 0
+
 function saveSwagToFile(score)
 	local file = io.open("highScore.txt", "r")
 	io.input(file)
@@ -55,7 +59,11 @@ function gameRender()
 	do
 		engi.renderWall(Walls[y])
 	end
-	engi.printScore(SWAG_SCORE, "SWAGSCORE:")
+	if LevelSelected == 2 then
+		engi.printScore(SWAG_SCORE, "RICK ROLLED ", 550, 250)
+	end
+	engi.printScore(SWAG_SCORE, "SWAGSCORE: ", 0, 0)
+	engi.printScore(FPS, "FPS: ", 0, 50)
 	for y=1, #Particles
 	do
 		engi.renderParticle(Particles[y], enemiesClose)
@@ -123,7 +131,7 @@ function destroyOutsideBullets()
 end
 
 function spawnEnemy()
-	if nrOfEnemies < maxNrOfEnemies then
+	if nrOfEnemies < maxNrOfEnemies and LevelSelected ~= 2 then
 		spawnX, spawnY, spawnSpeedX, spawnSpeedY = spawnPos();
 
 		width = getWidth()
@@ -167,6 +175,7 @@ function spawnWalls()
 end
 
 spawnWalls()
+engi.getLevelSelected()
 while(true)
 	do
 		enemiesClose = -1
@@ -178,7 +187,12 @@ while(true)
 		engi.getGameTime();
 		musicTimer = musicTimer - gameTime
 		if musicTimer < 0 then
+		if LevelSelected == 1 then
 			musicTimer = 216
+			end
+			if LevelSelected == 2 then
+			musicTimer = 213
+			end
 			engi.startMusic()		
 		end
 		Player:UpdatePlayer(gameTime)
@@ -215,13 +229,13 @@ while(true)
 		end
 		if bonusScoreCounter >= 0.5 then
 			bonusScoreCounter = 0
-			SWAG_SCORE = SWAG_SCORE + 50
+			SWAG_SCORE = SWAG_SCORE + 50 * (FPS / 100)
 			Player:getPos();
 			table.insert(Particles ,Entity.New(xPos, yPos - 10, 0.0, -3.0, 100, 100))
 		end
 		timer = timer + gameTime
 		if timer >= 1 then
-		 SWAG_SCORE = SWAG_SCORE + 1
+		 SWAG_SCORE = SWAG_SCORE + 1 * (FPS / 100)
 		 timer = 0
 		 enemySpeedMulti = enemySpeedMulti + 0.1
 		 maxNrOfEnemies = maxNrOfEnemies + 1
