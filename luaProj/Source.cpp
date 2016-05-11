@@ -677,11 +677,6 @@ void loadTextures()
 		cout << "error i texture load" << endl;
 	}
 	textures.push_back(new sf::Texture());
-	if (!textures.at(textures.size() - 1)->loadFromFile("Doge_Swag.png"))
-	{
-		cout << "error i texture load" << endl;
-	}
-	textures.push_back(new sf::Texture());
 	if (!textures.at(textures.size() - 1)->loadFromFile("next_level_swag_doge.png"))
 	{
 		cout << "error i texture load" << endl;

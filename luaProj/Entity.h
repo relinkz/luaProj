@@ -42,9 +42,6 @@ public:
 	int getWidth() const;
 	int getHeight() const;
 
-	void setTextureSheet(const std::string &sourceName);
-	void setSprite();
-
 	sf::Sprite* getPlayerSprite() const;
 
 	void setXPos(const float &newPos);
