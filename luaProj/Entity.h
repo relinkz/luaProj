@@ -20,9 +20,13 @@ private:
 	int width;
 	int height;
 
+	int spriteStage;
+	float animationTimer;
+
 	//std::vector<sf::IntRect> spriteSheetLevel;
+	std::vector<sf::IntRect> spriteSheetLevel;
 	sf::Texture* textureSheet;
-	sf::Sprite* sprite;
+	sf::Sprite* playerSprite;
 
 public:
 	Entity();
@@ -40,6 +44,8 @@ public:
 
 	void setTextureSheet(const std::string &sourceName);
 	void setSprite();
+
+	sf::Sprite* getPlayerSprite() const;
 
 	void setXPos(const float &newPos);
 	void setYPos(const float &newPos);

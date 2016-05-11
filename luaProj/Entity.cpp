@@ -34,9 +34,6 @@ Entity::Entity()
 
 	this->width = 10;
 	this->height = 10;
-
-	textureSheet = nullptr;
-	sprite = nullptr;
 }
 
 Entity::Entity(float x, float y, float xDir, float yDir, int width, int height)
@@ -53,6 +50,15 @@ Entity::Entity(float x, float y, float xDir, float yDir, int width, int height)
 
 Entity::~Entity()
 {
+	if (this->textureSheet != nullptr)
+	{
+		delete this->textureSheet;
+	}
+
+	if (this->playerSprite != nullptr)
+	{
+		delete this->playerSprite;
+	}
 }
 
 float Entity::getXPos() const
@@ -121,10 +127,10 @@ int Entity::getHeight() const
 	return this->height;
 }
 
-void Entity::setTextureSheet(const std::string & sourceName)
+
+sf::Sprite* Entity::getPlayerSprite() const
 {
-	this->textureSheet = new sf::Texture;
-	this->textureSheet->loadFromFile(sourceName);
+	return this->playerSprite;
 }
 
 Entity* Entity::CheckEntity(lua_State * L, int i)
@@ -189,13 +195,34 @@ int Entity::UpdatePlayer(lua_State *L)
 	Entity* aPtr = nullptr;
 	aPtr = CheckEntity(L, 1);
 
-	if (aPtr->sprite == nullptr)
-	{
-		//the sprite is not set
-	}
 
 	float dt = lua_tonumber(L, 2);
 
+	if (aPtr->playerSprite == nullptr)
+	{
+		aPtr->textureSheet = new sf::Texture();
+		aPtr->playerSprite = new sf::Sprite();
+		
+		aPtr->textureSheet->loadFromFile("Doge_Swag.png");
+		aPtr->playerSprite->setTexture(*(aPtr->textureSheet));
+
+		sf::IntRect animationFrame1(0, 0, 38, 30);
+		sf::IntRect animationFrame2(38, 0, 38, 30);
+		sf::IntRect animationFrame3(38 * 2, 0, 38, 30);
+		sf::IntRect animationFrame4(38 * 3, 0, 38, 30);
+		sf::IntRect animationFrame5(38 * 4, 0, 38, 30);
+
+		aPtr->playerSprite->setTextureRect(animationFrame4);
+
+		aPtr->spriteSheetLevel.push_back(animationFrame1);
+		aPtr->spriteSheetLevel.push_back(animationFrame2);
+		aPtr->spriteSheetLevel.push_back(animationFrame3);
+		aPtr->spriteSheetLevel.push_back(animationFrame4);
+		aPtr->spriteSheetLevel.push_back(animationFrame5);
+
+		aPtr->spriteStage = 0;
+		aPtr->animationTimer = 0.0f;
+	}
 
 	if (aPtr != nullptr)
 	{
@@ -235,6 +262,24 @@ int Entity::UpdatePlayer(lua_State *L)
 			aPtr->move(0.0f, ySpeed);
 		}
 
+		aPtr->playerSprite->setTextureRect(aPtr->spriteSheetLevel.at(aPtr->spriteStage));
+		aPtr->animationTimer += dt;
+
+		if (aPtr->animationTimer > 1.0f)
+		{
+			aPtr->spriteStage++;
+			aPtr->animationTimer = 0.0f;
+		}
+		if (aPtr->spriteStage == 5)
+		{
+			aPtr->spriteStage %= 5;
+		}
+		/*
+		if (aPtr->playerSprite != nullptr)
+		{
+			aPtr->playerSprite->setPosition(aPtr->xPos, aPtr->yPos);
+		}
+		*/
 	}
 
 	return 0;
