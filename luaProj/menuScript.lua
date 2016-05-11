@@ -42,6 +42,9 @@ SWAG_SCORE = tonumber(bestSwag)
 if SWAG_SCORE > 5000 then
 table.insert(Buttons, Entity.New(450, 0, 0.0, 0.0, 220, 140))
 end
+if SWAG_SCORE > 6000 then
+table.insert(Buttons, Entity.New(450, 150, 0.0, 0.0, 220, 140))
+end
 if SWAG_SCORE > 7000 then
 table.insert(Buttons, Entity.New(-50, 150, 0.0, 0.0, 220, 140))
 end

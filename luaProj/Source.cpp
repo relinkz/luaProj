@@ -235,6 +235,10 @@ static int renderMenu(lua_State *L)
 		{
 			text.setString("secret Level?");
 		}
+		if ((x - globalXOffSet) == 450 && (y - globalYOffSet) == 150)
+		{
+			text.setString("		real \n secret level");
+		}
 		if ((x - globalXOffSet) == -50 && (y - globalYOffSet) == 150)
 		{
 			text.setString("		   WOW \n secret level \n much secret \n many wow");
@@ -328,19 +332,19 @@ static int printScore(lua_State *L)
 	text.setString(toSay + score);
 
 	text.setCharacterSize(24);
-	if (levelSelected != 2)
+	if (levelSelected == 2 || levelSelected == 4)
 	{
-		text.setColor(sf::Color::White);
+		text.setColor(sf::Color::Black);
 	}
 	else
 	{
-		text.setColor(sf::Color::Black);
+		text.setColor(sf::Color::White);
 	}
 
 
 	text.setPosition(x, y);
 	int width = text.getLocalBounds().width;
-	if (toSay != "FPS: " && levelSelected != 2)
+	if (toSay != "FPS: " && levelSelected != 2 && levelSelected != 4)
 	{
 		sf::Sprite temp;
 		temp.setPosition(width + 10, 0);
@@ -463,6 +467,10 @@ static int buttonIntersectionTest(lua_State *L)
 		{
 			levelSelected = 2;
 			rickRolled = true;
+		}
+		if (Button->getXPos() == 450 && Button->getYPos() == 150)
+		{
+			levelSelected = 4;
 		}
 		if (Button->getXPos() == -50 && Button->getYPos() == 150)
 		{
@@ -685,7 +693,7 @@ void playGame()
 
 		if (buttonPressed == 1 ||buttonPressed >= 4)
 		{
-			if (secretLevelPlay == true)
+			if (levelSelected == 3)
 			{
 				if (!soundBuffer.loadFromFile("Nyan_Cat.wav"))
 				{
@@ -694,9 +702,18 @@ void playGame()
 				sound.setBuffer(soundBuffer);
 				sound.play();
 			}
-			if (rickRolled == true)
+			if (levelSelected == 2)
 			{
 				if (!soundBuffer.loadFromFile("Never_Gonna_Give_You_Up.wav"))
+				{
+
+				}
+				sound.setBuffer(soundBuffer);
+				sound.play();
+			}
+			if (levelSelected == 4)
+			{
+				if (!soundBuffer.loadFromFile("Trololo_Sing_Along_.wav"))
 				{
 
 				}

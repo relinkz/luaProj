@@ -1,7 +1,7 @@
 print(package.path)
 require("EnemySpawner")
 
-Player = Entity.New(150, 50, 0.5, 0.5, 10, 10)
+Player = Entity.New(320, 240, 0.5, 0.5, 10, 10)
 --Enemies = {Entity.New(300, 300, 0.0, 0.0, 50, 50)}
 Enemies = {}
 Walls = {}
@@ -61,6 +61,9 @@ function gameRender()
 	end
 	if LevelSelected == 2 then
 		engi.printScore(SWAG_SCORE, "RICK ROLLED ", 550, 250)
+	end
+	if LevelSelected == 4 then
+		engi.printScore(SWAG_SCORE, "U MAD LOL? ", 550, 250)
 	end
 	engi.printScore(SWAG_SCORE, "SWAGSCORE: ", 0, 0)
 	engi.printScore(FPS, "FPS: ", 0, 50)
@@ -131,7 +134,7 @@ function destroyOutsideBullets()
 end
 
 function spawnEnemy()
-	if nrOfEnemies < maxNrOfEnemies and LevelSelected ~= 2 then
+	if nrOfEnemies < maxNrOfEnemies and LevelSelected ~= 2 and LevelSelected ~= 4  then
 		spawnX, spawnY, spawnSpeedX, spawnSpeedY = spawnPos();
 
 		width = getWidth()
@@ -176,6 +179,12 @@ end
 
 spawnWalls()
 engi.getLevelSelected()
+if LevelSelected == 4 then
+table.insert(Enemies, Entity.New(0, 0,   0.0, 0.01, 640, 100))
+table.insert(Enemies, Entity.New(0, 480, 0.0, -0.01, 740, 100))
+table.insert(Enemies, Entity.New(0, 0,   0.01, 0.0, 100, 480))
+table.insert(Enemies, Entity.New(640, 0, -0.01, 0.0, 100, 480))
+end
 while(true)
 	do
 		enemiesClose = -1
@@ -192,6 +201,7 @@ while(true)
 			end
 			if LevelSelected == 2 then
 			musicTimer = 213
+			os.exit()
 			end
 			engi.startMusic()		
 		end
