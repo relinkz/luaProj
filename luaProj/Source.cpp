@@ -762,6 +762,7 @@ void playGame()
 				sound.play();
 			}
 			int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
+			
 			lua_getglobal(L, "playGame");
 			lua_pcall(L, 0, 0, 0);
 
