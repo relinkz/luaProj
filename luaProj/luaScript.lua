@@ -176,81 +176,82 @@ function spawnWalls()
 	io.close(file)
 end
 
-spawnWalls()
-engi.getLevelSelected()
-if LevelSelected == 4 then
-table.insert(Enemies, Entity.New(0, 0,   0.0, 0.01, 640, 100))
-table.insert(Enemies, Entity.New(0, 480, 0.0, -0.01, 740, 100))
-table.insert(Enemies, Entity.New(0, 0,   0.01, 0.0, 100, 480))
-table.insert(Enemies, Entity.New(640, 0, -0.01, 0.0, 100, 480))
-end
-while(true)
-	do
-		enemiesClose = -1
-		for y=1, #Walls
-		do
-			engi.wallIntersectionTest(Player, Walls[y], 1) 
-		end
-
-		engi.getGameTime();
-		musicTimer = musicTimer - gameTime
-		if musicTimer < 0 then
-		if LevelSelected == 1 then
-			musicTimer = 216
-			end
-			if LevelSelected == 2 then
-			musicTimer = 213
-			os.exit()
-			end
-			engi.startMusic()		
-		end
-		Player:UpdatePlayer(gameTime)
-
-		for y=1, #Particles
-		do
-			Particles[y]:Update(gameTime)
-		end
-
-		spawnEnemy()
-		for y=1, #Enemies
-		do
-			Enemies[y]:Update (gameTime)
-			engi.intersectionTest (Player, Enemies[y], bonusScoreCounter, enemiesClose)
-
-	if enemyIntersectionResult == -1 then
-			
-			saveSwagToFile(SWAG_SCORE)
-			release()
-			return
-			end
-		end
-
-		destroyOutsideBullets()
-
-
-		if #Particles >= 1 then
-			counter = counter + gameTime
-		end
-		if counter > 0.5 then
-			Particles[1]:remove()
-			table.remove(Particles, 1)
-			counter = 0
-		end
-		if bonusScoreCounter >= 0.5 then
-			bonusScoreCounter = 0
-			SWAG_SCORE = SWAG_SCORE + 50 * (FPS / 100)
-			Player:getPos();
-			table.insert(Particles ,Entity.New(xPos, yPos - 10, 0.0, -3.0, 100, 100))
-		end
-		timer = timer + gameTime
-		if timer >= 1 then
-		 SWAG_SCORE = SWAG_SCORE + 1 * (FPS / 100)
-		 timer = 0
-		 enemySpeedMulti = enemySpeedMulti + 0.1
-		 maxNrOfEnemies = maxNrOfEnemies + 1
-		end
-		gameRender()
+function playGame()
+	spawnWalls()
+	engi.getLevelSelected()
+	if LevelSelected == 4 then
+	table.insert(Enemies, Entity.New(0, 0,   0.0, 0.01, 640, 100))
+	table.insert(Enemies, Entity.New(0, 480, 0.0, -0.01, 740, 100))
+	table.insert(Enemies, Entity.New(0, 0,   0.01, 0.0, 100, 480))
+	table.insert(Enemies, Entity.New(640, 0, -0.01, 0.0, 100, 480))
 	end
-
+	while(true)
+		do
+			enemiesClose = -1
+			for y=1, #Walls
+			do
+				engi.wallIntersectionTest(Player, Walls[y], 1) 
+			end
+	
+			engi.getGameTime();
+			musicTimer = musicTimer - gameTime
+			if musicTimer < 0 then
+			if LevelSelected == 1 then
+				musicTimer = 216
+				end
+				if LevelSelected == 2 then
+				musicTimer = 213
+				os.exit()
+				end
+				engi.startMusic()		
+			end
+			Player:UpdatePlayer(gameTime)
+	
+			for y=1, #Particles
+			do
+				Particles[y]:Update(gameTime)
+			end
+	
+			spawnEnemy()
+			for y=1, #Enemies
+			do
+				Enemies[y]:Update (gameTime)
+				engi.intersectionTest (Player, Enemies[y], bonusScoreCounter, enemiesClose)
+	
+		if enemyIntersectionResult == -1 then
+				
+				saveSwagToFile(SWAG_SCORE)
+				release()
+				return
+				end
+			end
+	
+			destroyOutsideBullets()
+	
+	
+			if #Particles >= 1 then
+				counter = counter + gameTime
+			end
+			if counter > 0.5 then
+				Particles[1]:remove()
+				table.remove(Particles, 1)
+				counter = 0
+			end
+			if bonusScoreCounter >= 0.5 then
+				bonusScoreCounter = 0
+				SWAG_SCORE = SWAG_SCORE + 50 * (FPS / 100)
+				Player:getPos();
+				table.insert(Particles ,Entity.New(xPos, yPos - 10, 0.0, -3.0, 100, 100))
+			end
+			timer = timer + gameTime
+			if timer >= 1 then
+			 SWAG_SCORE = SWAG_SCORE + 1 * (FPS / 100)
+			 timer = 0
+			 enemySpeedMulti = enemySpeedMulti + 0.1
+			 maxNrOfEnemies = maxNrOfEnemies + 1
+			end
+			gameRender()
+		end
+end
 
 

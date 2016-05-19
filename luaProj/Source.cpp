@@ -719,9 +719,13 @@ void registerEngineFunctions(lua_State * L)
 
 void playGame()
 {
+
 	while (buttonPressed != 3)
 	{
 		int error = luaL_loadfile(L, "menuScript.lua") || lua_pcall(L, 0, 1, 0);
+
+		
+
 
 		if (error)
 		{
@@ -758,6 +762,8 @@ void playGame()
 				sound.play();
 			}
 			int error = luaL_loadfile(L, "luaScript.lua") || lua_pcall(L, 0, 1, 0);
+			lua_getglobal(L, "playGame");
+			lua_pcall(L, 0, 0, 0);
 
 			if (error)
 			{
