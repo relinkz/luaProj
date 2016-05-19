@@ -60,6 +60,7 @@ function gameRender()
 	end
 	if LevelSelected == 2 then
 		engi.printScore(SWAG_SCORE, "RICK ROLLED ", 550, 250)
+		engi.printScore(SWAG_SCORE, "Oh, the shutdown does not work!", 400, 300)
 	end
 	if LevelSelected == 4 then
 		engi.printScore(SWAG_SCORE, "U MAD LOL? ", 550, 250)
@@ -92,7 +93,7 @@ function release()
 		Particles[y]:remove()
 	end
 	Player:remove()
-	collectgarbage() 
+	--collectgarbage() 
 end
 function destroyOutsideBullets()
 
@@ -167,7 +168,7 @@ function spawnWalls()
 		numberX = tonumber(contentX)
 		numberY = tonumber(contentY)
 
-		table.insert(Walls,Entity.New(numberX,numberY,0.0,0.0))
+		table.insert(Walls,Entity.New(numberX,numberY,0.0,0.0,10,10))
 
 		contentX = io.read()
 		contentY = io.read()
